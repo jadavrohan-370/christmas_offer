@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 
 const posterCards = [
   {
@@ -28,6 +28,7 @@ const socials = [
 ];
 
 export default function App() {
+  const fileInputRef = useRef(null);
   const [formValues, setFormValues] = useState({
     fullName: '',
     businessName: '',
@@ -44,8 +45,12 @@ export default function App() {
   );
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormValues((prev) => ({ ...prev, [name]: value }));
+    const { name, value, files } = event.target;
+    if (name === 'businessLogo' && files && files[0]) {
+      setFormValues((prev) => ({ ...prev, [name]: URL.createObjectURL(files[0]) }));
+    } else {
+      setFormValues((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (event) => {
@@ -70,10 +75,10 @@ export default function App() {
         <div className="hero__copy">
           <Logo />
           <p className="eyebrow">A Festive Gift for You!</p>
-          <h1 className="headline">
+          <h3 className="headline">
             Let your business celebrate with free Christmas &amp; New Year
             creatives.
-          </h1>
+          </h3>
           <p className="body">
             Register now and receive a professionally designed Christmas &amp;
             New Year poster/flyer absolutely free. Whether you&apos;re a
@@ -122,20 +127,31 @@ export default function App() {
               <label className="form__label">
                 Address
                 <input
-                  name="address"
+                  name="Address"
                   value={formValues.address}
                   onChange={handleChange}
-                  placeholder="City, Country"
+                  placeholder="Add Address"
                 />
               </label>
               <label className="form__label">
-                Business Logo link (optional)
+                Business Logo (optional)
                 <input
+                  type="file"
                   name="businessLogo"
-                  value={formValues.businessLogo}
+                  ref={fileInputRef}
                   onChange={handleChange}
-                  placeholder="https://..."
+                  style={{ display: 'none' }}
                 />
+                <button
+                  type="button"
+                  className="file-upload-btn"
+                  onClick={() => fileInputRef.current.click()}
+                >
+                  + Add Logo
+                </button>
+                {formValues.businessLogo && (
+                  <img src={formValues.businessLogo} alt="Business Logo Preview" style={{ maxWidth: '100px', marginTop: '10px' }} />
+                )}
               </label>
               <label className="form__label">
                 Contact No
@@ -144,6 +160,7 @@ export default function App() {
                   value={formValues.contact}
                   onChange={handleChange}
                   placeholder="+91 75730 80196"
+                  maxLength={10}
                 />
               </label>
               <button type="submit" className="btn" disabled={!canSubmit}>

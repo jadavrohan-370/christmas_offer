@@ -66,7 +66,7 @@ export default function App() {
   return (
     <div className="page">
       <GradientBackground />
-      <header className="hero section">
+      <header className="hero section site-header">
         <div className="hero__copy">
           <Logo />
           <p className="eyebrow">A Festive Gift for You!</p>
@@ -87,7 +87,9 @@ export default function App() {
         </div>
         <div className="hero__form">
           <div className="card">
-            <h2 className="card__title">Free Registration Form</h2>
+            <h2 className="card__title">Free Registration Form 
+              
+            </h2>
             <form className="form" onSubmit={handleSubmit}>
               <label className="form__label">
                 Full Name*
@@ -244,7 +246,7 @@ function Logo() {
   return (
     <div className="logo">
       <div className="logo__mark">
-        <img src="../Image/Rlogo.png" alt="ReimVibe Technologies Logo" />
+        <img src="./src/Image/RVlogo.png" alt="ReimVibe Technologies Logo" />
       </div>
       <span className="logo__text">ReimVibe Technologies</span>
     </div>

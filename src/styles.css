@@ -338,14 +338,15 @@ body {
   font-weight: 700;
   color: #0f2860;
   letter-spacing: 0.2px;
-  background-image: url(../Image/RVlogo.png);
 }
 
 .logo__mark {
   width: 44px; 
   height: 44px;
-  background-size: cover;
-  background-image: url(../Image/Rvlogo.png); 
+  border-radius: 8px;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
 }
 
 /* .logo__text {

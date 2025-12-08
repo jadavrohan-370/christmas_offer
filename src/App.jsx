@@ -244,6 +244,7 @@ function Logo() {
   return (
     <div className="logo">
       <div className="logo__mark">
+        <img src="../Image/Rlogo.png" alt="ReimVibe Technologies Logo" />
       </div>
       <span className="logo__text">ReimVibe Technologies</span>
     </div>

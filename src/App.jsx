@@ -189,7 +189,12 @@ export default function App() {
           </p>
         </div>
         <div className="tree-card" aria-hidden="true">
-          <div className="tree-card__tree">🎄</div>
+          <div className="tree-card__tree">
+            {/* <img src="Image/tree2.png"/>background-image:url(../Image/tree2.png);
+  width: 160px;
+  height: 200px;
+ */}
+          </div>
         </div>
       </section>
 
@@ -238,7 +243,8 @@ function GradientBackground() {
 function Logo() {
   return (
     <div className="logo">
-      <div className="logo__mark">RV</div>
+      <div className="logo__mark">
+      </div>
       <span className="logo__text">ReimVibe Technologies</span>
     </div>
   );

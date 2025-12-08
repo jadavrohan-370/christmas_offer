@@ -181,8 +181,8 @@ body {
 
 .poster {
   position: relative;
-  height: 320px;
-  width: 100%;
+  height: 25rem;
+  width: 25rem;
   box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
   background-image: url(../Image/Bluegiftcard.png);
   background-size: cover;
@@ -193,9 +193,11 @@ body {
 .poster--christmas {
   background-image: url(../Image/Redgiftcard.png);
   background-size:cover;
-  width:100%;
-  height:320px;
-  border-radius: 16px;
+   height: 25rem; 
+   width: 25rem; 
+  border-radius: 16px; 
+  position: relative;
+  box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
 
 }
 
@@ -244,20 +246,20 @@ body {
 }
 
 .tree-card {
-  background: #ffffffcc;
   border-radius: 20px;
-  padding: 24px;
-  min-height: 240px;
+  padding: 280px;  
   display: grid;
   place-items: center;
   box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
   border: 1px solid #e6edff;
+  background-image:url(../Image/tree2.png);
+  background-size: cover;
+  background-position: center;
 }
 
 .tree-card__tree {
-  font-size: 96px;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12));
-}
+  }
 
 .services-grid {
   margin-top: 24px;
@@ -336,23 +338,19 @@ body {
   font-weight: 700;
   color: #0f2860;
   letter-spacing: 0.2px;
+  background-image: url(../Image/RVlogo.png);
 }
 
 .logo__mark {
-  width: 44px;
+  width: 44px; 
   height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #1565d8, #31c48d);
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  color: #fff;
-  box-shadow: 0 10px 22px rgba(21, 101, 216, 0.25);
+  background-size: cover;
+  background-image: url(../Image/Rvlogo.png); 
 }
 
-.logo__text {
+/* .logo__text {
   font-size: 16px;
-}
+} */
 
 @media (max-width: 640px) {
   .section {

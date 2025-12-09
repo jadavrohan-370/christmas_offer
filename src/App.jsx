@@ -161,7 +161,7 @@ export default function App() {
                   name="contact"
                   value={formValues.contact}
                   onChange={handleChange}
-                  placeholder="+91 75730 80196"
+                  placeholder="+91 "
                   maxLength={10}
                 />
               </label>

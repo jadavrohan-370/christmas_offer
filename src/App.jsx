@@ -1,10 +1,11 @@
 import React, { useMemo, useState, useRef } from 'react';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './styles.css';
 
 const posterCards = [
   {
-   
     theme: 'night',
-    Image: '🌃' ,
+    Image: '🌃',
   },
   {
     theme: 'christmas',
@@ -13,19 +14,20 @@ const posterCards = [
 ];
 
 const services = [
-  { label: 'Web - Development', icon: '🎁' },
-  { label: 'Flutter - App Development', icon: '🎀' },
-  { label: 'Mobile - App Development', icon: '🎄' },
-  { label: 'UI - UX Designing', icon: '🎆' },
-  { label: 'IT Consultancy & support', icon: '🧑‍💻' },
+  { label: 'Web Development', icon: <i className="fas fa-code"></i> },
+  { label: 'Mobile - App Development', icon: <i className="fas fa-mobile"></i> },
+  { label: 'UI - UX Designing', icon: <i className="fas fa-palette"></i> },
+  { label: 'IT Consultancy & support', icon: <i className="fas fa-headset"></i> },
 ];
 
 const socials = [
-  { name: 'Facebook', href: 'https://facebook.com', icon: '📘' },
-  { name: 'LinkedIn', href: 'https://linkedin.com', icon: '💼' },
-  { name: 'Instagram', href: 'https://instagram.com', icon: '📸' },
-  { name: 'YouTube', href: 'https://youtube.com', icon: '▶️' },
+  { name: 'Facebook', href: 'https://facebook.com', icon: <i className="fab fa-facebook"></i> },
+  { name: 'LinkedIn', href: 'https://linkedin.com', icon: <i className="fab fa-linkedin"></i> },
+  { name: 'Instagram', href: 'https://instagram.com', icon:<i className="fab fa-instagram"></i> },
+  
+
 ];
+
 
 export default function App() {
   const fileInputRef = useRef(null);
@@ -92,9 +94,7 @@ export default function App() {
         </div>
         <div className="hero__form">
           <div className="card">
-            <h2 className="card__title">Free Registration Form 
-              
-            </h2>
+            <h2 className="card__title">Free Registration Form</h2>
             <form className="form" onSubmit={handleSubmit}>
               <label className="form__label">
                 Full Name*
@@ -237,20 +237,25 @@ export default function App() {
           <div className="contact-item">📞 +91 75730 80196, +91 70166 91326</div>
           <div className="contact-item">✉️ info@reimvibetechnologies.com</div>
         </div>
-        <div className="socials">
-          {socials.map((social) => (
-            <a
-              key={social.name}
-              className="socials__link"
-              href={social.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span aria-hidden="true">{social.icon}</span> {social.name}
-            </a>
-          ))}
-        </div>
-      </footer>
+  <div className="socials">
+    {socials.map((social) => (
+      <a
+        key={social.name}
+        className="socials__link"
+        href={social.href}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span aria-hidden="true">{social.icon}</span> {social.name}
+      </a>
+    ))}
+  </div>
+  <img
+    src="./src/Image/fotter1.png"
+    className="img-fluid footer-image"
+    alt="Festive Christmas and New Year poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
+  />
+</footer>
     </div>
   );
 }

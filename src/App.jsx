@@ -1,6 +1,8 @@
 import React, { useMemo, useState, useRef } from 'react';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import './styles.css';
+import CloudinaryUploader from "./components/Cloudnairy.jsx";
+import axios from 'axios';
+import RVlogo from './Image/RVlogo.png';
+import fotter1 from './Image/fotter1.png';
 
 const posterCards = [
   {
@@ -23,14 +25,11 @@ const services = [
 const socials = [
   { name: 'Facebook', href: 'https://facebook.com', icon: <i className="fab fa-facebook"></i> },
   { name: 'LinkedIn', href: 'https://linkedin.com', icon: <i className="fab fa-linkedin"></i> },
-  { name: 'Instagram', href: 'https://instagram.com', icon:<i className="fab fa-instagram"></i> },
-  
-
+  { name: 'Instagram', href: 'https://instagram.com', icon: <i className="fab fa-instagram"></i> },
 ];
 
 
 export default function App() {
-  const fileInputRef = useRef(null);
   const [formValues, setFormValues] = useState({
     fullName: '',
     businessName: '',
@@ -40,34 +39,57 @@ export default function App() {
     contact: '',
   });
   const [status, setStatus] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canSubmit = useMemo(
-    () => formValues.fullName.trim() && formValues.email.trim(),
+    () => formValues.fullName.trim() && formValues.businessName.trim() && formValues.email.trim() && formValues.address.trim() && formValues.contact.trim(),
     [formValues],
   );
 
   const handleChange = (event) => {
-    const { name, value, files } = event.target;
-    if (name === 'businessLogo' && files && files[0]) {
-      setFormValues((prev) => ({ ...prev, [name]: URL.createObjectURL(files[0]) }));
-    } else {
-      setFormValues((prev) => ({ ...prev, [name]: value }));
-    }
+    const { name, value } = event.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!canSubmit) {
-      setStatus({ type: 'error', message: 'Please add name and email.' });
-      return;
+    setIsSubmitting(true);
+    setStatus(null);
+
+    const params = new URLSearchParams();
+    params.append("fullName", formValues.fullName);
+    params.append("businessName", formValues.businessName);
+    params.append("email", formValues.email);
+    params.append("address", formValues.address);
+    params.append("contact", formValues.contact);
+    params.append("businessLogo", formValues.businessLogo || "");
+
+    console.log("Sending:", params.toString());
+
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMW6XwWg_wERt5zlXsLcGqKN8HK5g7JSvacijYT-T2Zn5RjaEjQn0KzIb-QlQxM6ag5Q/exec";
+
+    try {
+      const response = await axios.post(GOOGLE_SCRIPT_URL, params.toString(), {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      });
+      console.log("Google Sheet Response:", response.data);
+      setStatus({ type: 'success', message: 'Form submitted successfully!' });
+      setFormValues({
+        fullName: '',
+        businessName: '',
+        email: '',
+        address: '',
+        businessLogo: '',
+        contact: '',
+      });
+    } catch (error) {
+      setStatus({ type: 'error', message: 'Submission failed. Please try again.' });
+      console.error("Submission error:", error);
+    } finally {
+      setIsSubmitting(false);
     }
-    setStatus({
-      type: 'success',
-      message:
-        'Thank you for registering! We will share your free festive poster soon.',
-    });
-    // Placeholder for real submission API call
-    console.info('Form submission', formValues);
   };
 
   return (
@@ -99,6 +121,7 @@ export default function App() {
               <label className="form__label">
                 Full Name*
                 <input
+                  type="text"
                   name="fullName"
                   value={formValues.fullName}
                   onChange={handleChange}
@@ -109,10 +132,12 @@ export default function App() {
               <label className="form__label">
                 Business Name
                 <input
+                  type='text'
                   name="businessName"
                   value={formValues.businessName}
                   onChange={handleChange}
                   placeholder="ReimVibe Technologies"
+                  required
                 />
               </label>
               <label className="form__label">
@@ -129,44 +154,40 @@ export default function App() {
               <label className="form__label">
                 Address
                 <input
-                  name="Address"
+                  type='text'
+                  name="address"
                   value={formValues.address}
                   onChange={handleChange}
                   placeholder="Add Address"
+                  required
                 />
               </label>
               <label className="form__label">
                 Business Logo (optional)
-                <input
-                  type="file"
-                  name="businessLogo"
-                  ref={fileInputRef}
-                  onChange={handleChange}
-                  style={{ display: 'none' }}
-                />
-                <button
-                  type="button"
-                  className="file-upload-btn"
-                  onClick={() => fileInputRef.current.click()}
-                >
-                  + Add Logo
-                </button>
-                {formValues.businessLogo && (
-                  <img src={formValues.businessLogo} alt="Business Logo Preview" style={{ maxWidth: '100px', marginTop: '10px' }} />
-                )}
+                <CloudinaryUploader onUpload={(url) => setFormValues((prev) => ({ ...prev, businessLogo: url }))} />
               </label>
               <label className="form__label">
                 Contact No
                 <input
+                  type='tel'
                   name="contact"
                   value={formValues.contact}
                   onChange={handleChange}
-                  placeholder="+91 "
+                  placeholder="+91"
+                  minLength={10}
                   maxLength={10}
+                  required
                 />
               </label>
-              <button type="submit" className="btn" disabled={!canSubmit}>
-                Submit
+              <button type="submit" className="btn" disabled={!canSubmit || isSubmitting}>
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner"></span>
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit'
+                )}
               </button>
               {status && (
                 <p
@@ -187,7 +208,7 @@ export default function App() {
         </p>
         <div className="poster-grid">
           {posterCards.map((poster) => (
-            <PosterCard key={poster.title} {...poster} />
+            <PosterCard key={poster.theme} {...poster} />
           ))}
         </div>
       </section>
@@ -237,25 +258,25 @@ export default function App() {
           <div className="contact-item">📞 +91 75730 80196, +91 70166 91326</div>
           <div className="contact-item">✉️ info@reimvibetechnologies.com</div>
         </div>
-  <div className="socials">
-    {socials.map((social) => (
-      <a
-        key={social.name}
-        className="socials__link"
-        href={social.href}
-        target="_blank"
-        rel="noreferrer"
-      >
-        <span aria-hidden="true">{social.icon}</span> {social.name}
-      </a>
-    ))}
-  </div>
-  <img
-    src="./src/Image/fotter1.png"
-    className="img-fluid footer-image"
-    alt="Festive Christmas and New Year poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
-  />
-</footer>
+        <div className="socials">
+          {socials.map((social) => (
+            <a
+              key={social.name}
+              className="socials__link"
+              href={social.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span aria-hidden="true">{social.icon}</span> {social.name}
+            </a>
+          ))}
+        </div>
+        <img
+          src={fotter1}
+          className="img-fluid footer-image"
+          alt="Festive Christmas and New Year poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
+        />
+      </footer>
     </div>
   );
 }
@@ -268,7 +289,7 @@ function Logo() {
   return (
     <div className="logo">
       <div className="logo__mark">
-        <img src="./src/Image/RVlogo.png" alt="ReimVibe Technologies Logo" />
+        <img src={RVlogo} alt="ReimVibe Technologies Logo" />
       </div>
       <span className="logo__text">ReimVibe Technologies</span>
     </div>
@@ -287,4 +308,3 @@ function PosterCard({ title, caption, theme, accent }) {
     </div>
   );
 }
-

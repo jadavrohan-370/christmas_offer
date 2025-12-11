@@ -23,9 +23,9 @@ const services = [
 ];
 
 const socials = [
-  { name: 'Facebook', href: 'https://facebook.com', icon: <i className="fab fa-facebook"></i> },
-  { name: 'LinkedIn', href: 'https://linkedin.com', icon: <i className="fab fa-linkedin"></i> },
-  { name: 'Instagram', href: 'https://instagram.com', icon: <i className="fab fa-instagram"></i> },
+  // { name: 'Facebook', href: 'https://facebook.com', icon: <i className="fab fa-facebook"></i> },
+  // { name: 'LinkedIn', href: '', icon: <i className="fab fa-linkedin"></i> },
+  // { name: 'Instagram', href: 'https://www.instagram.com/reimvibetechnologies?igsh=MTltbmM3YmtnemN4Mw', icon: <i className="fab fa-instagram"></i> },
 ];
 
 

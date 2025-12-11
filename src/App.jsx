@@ -40,10 +40,23 @@ export default function App() {
   });
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
       window.location.href = 'https://www.reimvibetechnologies.com/';
+    }
+  }, []);
+
+  useEffect(() => {
+    // Hide loader when page is fully loaded
+    const handleLoad = () => setIsLoading(false);
+    
+    if (document.readyState === 'complete') {
+      setIsLoading(false);
+    } else {
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
     }
   }, []);
 
@@ -100,6 +113,7 @@ export default function App() {
 
   return (
     <div className="page">
+      {isLoading && <PageLoader />}
       <GradientBackground />
       <header className="hero section site-header">
         <div className="hero__copy">
@@ -312,6 +326,17 @@ function PosterCard({ title, caption, theme, accent }) {
         <p className="poster__caption">{caption}</p>
       </div>
       <div className="poster__accent" style={{ background: accent }} />
+    </div>
+  );
+}
+
+function PageLoader() {
+  return (
+    <div className="page-loader">
+      <div className="loader-spinner">
+        <div className="spinner"></div>
+      </div>
+      <p className="loader-text">Loading...</p>
     </div>
   );
 }

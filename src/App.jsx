@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import CloudinaryUploader from "./components/Cloudnairy.jsx";
 import axios from 'axios';
 import RVlogo from './Image/RVlogo.png';
@@ -40,6 +40,12 @@ export default function App() {
   });
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
+      window.location.href = 'https://www.reimvibetechnologies.com/';
+    }
+  }, []);
 
   const canSubmit = useMemo(
     () => formValues.fullName.trim() && formValues.businessName.trim() && formValues.email.trim() && formValues.address.trim() && formValues.contact.trim(),
@@ -256,7 +262,8 @@ export default function App() {
         <p className="eyebrow center">Stay In Touch</p>
         <div className="footer__contacts">
           <div className="contact-item">📞 +91 75730 80196, +91 70166 91326</div>
-          <div className="contact-item">✉️ info@reimvibetechnologies.com</div>
+          <a href="mailto:info@reimvibetechnologies.com" className="contact-item">✉️ info@reimvibetechnologies.com</a>
+          <a href="http://www.reimvibetechnologies.com" className="contact-item" target="_blank" rel="noopener noreferrer">🌐www.reimvibetechnologies.com</a>
         </div>
         <div className="socials">
           {socials.map((social) => (

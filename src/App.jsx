@@ -15,6 +15,7 @@ const SafeImage = ({ src, alt, className, style, ...props }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+
   const handleError = () => {
     setImageError(true);
   };
@@ -107,6 +108,7 @@ export default function App() {
   });
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
@@ -116,10 +118,10 @@ export default function App() {
 
   useEffect(() => {
     // Hide loader when page is fully loaded
-    const handleLoad = () => setIsLoading(true);
+    const handleLoad = () => setIsLoading(false);
 
     if (document.readyState === 'complete') {
-      setIsLoading(true);
+      setIsLoading(false);
     } else {
       window.addEventListener('load', handleLoad);
       return () => window.removeEventListener('load', handleLoad);
@@ -183,7 +185,7 @@ export default function App() {
 
   return (
     <div className="page">
-      {isLoading && <PageLoader />}
+      <PageLoader isLoading={isLoading} />
       <GradientBackground />
       <header className="hero section site-header">
         <div className="hero__copy">
@@ -305,15 +307,15 @@ export default function App() {
           Free Poster For Christmas &amp; New Year
         </p>
         <div className="poster-grid">
-          <div className={`poster poster--${theme}`}>
-            <div className="poster__overlay" />
-            <div className="poster__content">
-              <p className="poster__title">{title}</p>
-              <p className="poster__caption">{caption}</p>
-              {/* <img src={} alt="abc" /> */}
-            </div>
-            <div className="poster__accent" style={{ background: accent }} />
-          </div>
+          {posterCards.map((card, index) => (
+            <PosterCard
+              key={index}
+              title={card.title}
+              caption={card.caption}
+              theme={card.theme}
+              image={card.image}
+            />
+          ))}
         </div>
       </section>
 
@@ -431,9 +433,19 @@ function PosterCard({ title, caption, theme, image }) {
       <div className="poster__content">
         <p className="poster__title">{title}</p>
         <p className="poster__caption">{caption}</p>
-        <img src={Image} alt="abc" />
       </div>
       {image && <SafeImage src={image} className="poster__image" alt={`${theme} poster`} />}
+    </div>
+  );
+}
+
+function PageLoader({ isLoading }) {
+  return (
+    <div className={`page-loader ${!isLoading ? 'fade-out' : ''}`}>
+      <div className="loader-spinner">
+        <div className="spinner"></div>
+      </div>
+      <p className="loader-text">Loading...</p>
     </div>
   );
 }

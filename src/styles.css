@@ -225,15 +225,11 @@ body {
   width: 25rem;
   height: 25rem;
   box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
-  background-image: url(./src/Image/Bluegiftcard.png);
-  background-size: cover;
-  background-position: center;
   color: #ffffff;
   border-radius: 16px;
 }
 
 .poster--christmas {
-  background-image: url(./src/Image/Redgiftcard.png);
   background-size: cover;
   background-position: center;
   border-radius: 16px;
@@ -292,7 +288,6 @@ body {
   place-items: center;
   box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
   border: 1px solid #e6edff;
-  background-image: url(./src/Image/tree2.png);
   background-size: cover;
 }
 

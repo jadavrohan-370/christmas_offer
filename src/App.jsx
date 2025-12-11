@@ -1,25 +1,31 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import CloudinaryUploader from "./components/Cloudnairy.jsx";
-import axios from 'axios';
-import RVlogo from './Image/RVlogo.png';
-import fotter1 from './Image/fotter1.png';
+import axios from "axios";
+import RVlogo from "./Image/RVlogo.png";
+import fotter1 from "./Image/fotter1.png";
 
-const posterCards = [
-  {
-    theme: 'night',
-    Image: '🌃',
-  },
-  {
-    theme: 'christmas',
-    accent: '#a0171e',
-  },
-];
+// const posterCards = [
+//   {
+//     theme: 'night',
+//     Image: '🌃',
+//   },
+//   {
+//     theme: 'christmas',
+//     accent: '#a0171e',
+//   },
+// ];
 
 const services = [
-  { label: 'Web Development', icon: <i className="fas fa-code"></i> },
-  { label: 'Mobile - App Development', icon: <i className="fas fa-mobile"></i> },
-  { label: 'UI - UX Designing', icon: <i className="fas fa-palette"></i> },
-  { label: 'IT Consultancy & support', icon: <i className="fas fa-headset"></i> },
+  { label: "Web Development", icon: <i className="fas fa-code"></i> },
+  {
+    label: "Mobile - App Development",
+    icon: <i className="fas fa-mobile"></i>,
+  },
+  { label: "UI - UX Designing", icon: <i className="fas fa-palette"></i> },
+  {
+    label: "IT Consultancy & support",
+    icon: <i className="fas fa-headset"></i>,
+  },
 ];
 
 const socials = [
@@ -28,41 +34,35 @@ const socials = [
   // { name: 'Instagram', href: 'https://www.instagram.com/reimvibetechnologies?igsh=MTltbmM3YmtnemN4Mw', icon: <i className="fab fa-instagram"></i> },
 ];
 
-
 export default function App() {
   const [formValues, setFormValues] = useState({
-    fullName: '',
-    businessName: '',
-    email: '',
-    address: '',
-    businessLogo: '',
-    contact: '',
+    fullName: "",
+    businessName: "",
+    email: "",
+    address: "",
+    businessLogo: "",
+    contact: "",
   });
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
-      window.location.href = 'https://www.reimvibetechnologies.com/';
-    }
-  }, []);
-
-  useEffect(() => {
-    // Hide loader when page is fully loaded
-    const handleLoad = () => setIsLoading(true);
-    
-    if (document.readyState === 'complete') {
-      setIsLoading(true);
-    } else {
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
+    if (
+      window.location.protocol === "http:" &&
+      window.location.hostname === "www.reimvibetechnologies.com"
+    ) {
+      window.location.href = "https://www.reimvibetechnologies.com/";
     }
   }, []);
 
   const canSubmit = useMemo(
-    () => formValues.fullName.trim() && formValues.businessName.trim() && formValues.email.trim() && formValues.address.trim() && formValues.contact.trim(),
-    [formValues],
+    () =>
+      formValues.fullName.trim() &&
+      formValues.businessName.trim() &&
+      formValues.email.trim() &&
+      formValues.address.trim() &&
+      formValues.contact.trim(),
+    [formValues]
   );
 
   const handleChange = (event) => {
@@ -90,21 +90,24 @@ export default function App() {
     try {
       const response = await axios.post(GOOGLE_SCRIPT_URL, params.toString(), {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       });
       console.log("Google Sheet Response:", response.data);
-      setStatus({ type: 'success', message: 'Form submitted successfully!' });
+      setStatus({ type: "success", message: "Form submitted successfully!" });
       setFormValues({
-        fullName: '',
-        businessName: '',
-        email: '',
-        address: '',
-        businessLogo: '',
-        contact: '',
+        fullName: "",
+        businessName: "",
+        email: "",
+        address: "",
+        businessLogo: "",
+        contact: "",
       });
     } catch (error) {
-      setStatus({ type: 'error', message: 'Submission failed. Please try again.' });
+      setStatus({
+        type: "error",
+        message: "Submission failed. Please try again.",
+      });
       console.error("Submission error:", error);
     } finally {
       setIsSubmitting(false);
@@ -152,7 +155,7 @@ export default function App() {
               <label className="form__label">
                 Business Name
                 <input
-                  type='text'
+                  type="text"
                   name="businessName"
                   value={formValues.businessName}
                   onChange={handleChange}
@@ -174,7 +177,7 @@ export default function App() {
               <label className="form__label">
                 Address
                 <input
-                  type='text'
+                  type="text"
                   name="address"
                   value={formValues.address}
                   onChange={handleChange}
@@ -184,12 +187,16 @@ export default function App() {
               </label>
               <label className="form__label">
                 Business Logo (optional)
-                <CloudinaryUploader onUpload={(url) => setFormValues((prev) => ({ ...prev, businessLogo: url }))} />
+                <CloudinaryUploader
+                  onUpload={(url) =>
+                    setFormValues((prev) => ({ ...prev, businessLogo: url }))
+                  }
+                />
               </label>
               <label className="form__label">
                 Contact No
                 <input
-                  type='tel'
+                  type="tel"
                   name="contact"
                   value={formValues.contact}
                   onChange={handleChange}
@@ -199,14 +206,18 @@ export default function App() {
                   required
                 />
               </label>
-              <button type="submit" className="btn" disabled={!canSubmit || isSubmitting}>
+              <button
+                type="submit"
+                className="btn"
+                disabled={!canSubmit || isSubmitting}
+              >
                 {isSubmitting ? (
                   <>
                     <span className="spinner"></span>
                     Submitting...
                   </>
                 ) : (
-                  'Submit'
+                  "Submit"
                 )}
               </button>
               {status && (
@@ -227,9 +238,15 @@ export default function App() {
           Free Poster For Christmas &amp; New Year
         </p>
         <div className="poster-grid">
-          {posterCards.map((poster) => (
-            <PosterCard key={poster.theme} {...poster} />
-          ))}
+          <div className={`poster poster--${theme}`}>
+            <div className="poster__overlay" />
+            <div className="poster__content">
+              <p className="poster__title">{title}</p>
+              <p className="poster__caption">{caption}</p>
+              <img src={} alt="abc" />
+            </div>
+            <div className="poster__accent" style={{ background: accent }} />
+          </div>
         </div>
       </section>
 
@@ -275,9 +292,23 @@ export default function App() {
       <footer className="section footer">
         <p className="eyebrow center">Stay In Touch</p>
         <div className="footer__contacts">
-          <div className="contact-item">📞 +91 75730 80196, +91 70166 91326</div>
-          <a href="mailto:info@reimvibetechnologies.com" className="contact-item">✉️ info@reimvibetechnologies.com</a>
-          <a href="http://www.reimvibetechnologies.com" className="contact-item" target="_blank" rel="noopener noreferrer">🌐www.reimvibetechnologies.com</a>
+          <div className="contact-item">
+            📞 +91 75730 80196, +91 70166 91326
+          </div>
+          <a
+            href="mailto:info@reimvibetechnologies.com"
+            className="contact-item"
+          >
+            ✉️ info@reimvibetechnologies.com
+          </a>
+          <a
+            href="http://www.reimvibetechnologies.com"
+            className="contact-item"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            🌐www.reimvibetechnologies.com
+          </a>
         </div>
         <div className="socials">
           {socials.map((social) => (
@@ -317,26 +348,16 @@ function Logo() {
   );
 }
 
-function PosterCard({ title, caption, theme, accent }) {
+function PosterCard({ title, caption, theme, accent, Image }) {
   return (
     <div className={`poster poster--${theme}`}>
       <div className="poster__overlay" />
       <div className="poster__content">
         <p className="poster__title">{title}</p>
         <p className="poster__caption">{caption}</p>
+        <img src={Image} alt="abc" />
       </div>
       <div className="poster__accent" style={{ background: accent }} />
-    </div>
-  );
-}
-
-function PageLoader() {
-  return (
-    <div className="page-loader">
-      <div className="loader-spinner">
-        <div className="spinner"></div>
-      </div>
-      <p className="loader-text">Loading...</p>
     </div>
   );
 }

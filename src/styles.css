@@ -220,24 +220,31 @@ body {
   gap: 20px;
 }
 
+
 .poster {
   position: relative;
   width: 25rem;
   height: 25rem;
   box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
-  background-image: url(./src/Image/Bluegiftcard.png);
-  background-size: cover;
-  background-position: center;
   color: #ffffff;
   border-radius: 16px;
+  overflow: hidden;
+}
+
+.poster img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .poster--christmas {
-  background-image: url(./src/Image/Redgiftcard.png);
-  background-size: cover;
-  background-position: center;
   border-radius: 16px;
   box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
+  overflow: hidden;
 }
 
 .poster__overlay {
@@ -273,11 +280,23 @@ body {
   max-width: 280px;
 }
 
+
 .poster__accent {
   position: absolute;
   inset: auto 0 0 0;
   height: 14px;
   opacity: 0.75;
+}
+
+.poster__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 16px;
 }
 
 .section--two-column {
@@ -287,13 +306,79 @@ body {
   align-items: center;
 }
 
+/* Festive elements styling */
+.festive-elements {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  align-items: center;
+}
+
+.festive-card {
+  border-radius: 16px;
+  overflow: hidden;
+  /* box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18); */
+  border: 1px solid #e6edff;
+  /* background: #fff; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.festive-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  max-width: 180px;
+  max-height: 180px;
+}
+
+.santa-card {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+}
+
+.gift-card {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.festive-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  /* box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18); */
+  border: 1px solid #e6edff;
+}
+
+.festive-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.santa-card {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+}
+
+.gift-card {
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #00d2d3, #54a0ff);
+}
+
+
 .tree-card {
   padding: 300px;
   place-items: center;
-  box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18);
-  border: 1px solid #e6edff;
-  background-image: url(./src/Image/tree2.png);
+  /* box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18); */
+  /* border: 1px solid #e6edff; */
+  background-image: url(/images/tree2.png);
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .tree-card__tree {
@@ -411,6 +496,8 @@ body {
   position: relative;
   flex: 0 0 120px;
 }
+
+
 
 .site-header .logo__mark img {
   width: 100%;

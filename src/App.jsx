@@ -66,7 +66,7 @@ export default function App() {
 
     console.log("Sending:", params.toString());
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzMW6XwWg_wERt5zlXsLcGqKN8HK5g7JSvacijYT-T2Zn5RjaEjQn0KzIb-QlQxM6ag5Q/exec";
+    const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
 
     try {
       const response = await axios.post(GOOGLE_SCRIPT_URL, params.toString(), {

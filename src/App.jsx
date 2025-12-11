@@ -16,12 +16,10 @@ const SafeImage = ({ src, alt, className, style, ...props }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleError = () => {
-    console.error(`Failed to load image: ${src}`);
     setImageError(true);
   };
 
   const handleLoad = () => {
-    console.log(`Successfully loaded image: ${src}`);
     setImageLoaded(true);
   };
 
@@ -156,8 +154,6 @@ export default function App() {
     params.append("contact", formValues.contact);
     params.append("businessLogo", formValues.businessLogo || "");
 
-    console.log("Sending:", params.toString());
-
     const GOOGLE_SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
 
     try {
@@ -166,7 +162,6 @@ export default function App() {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
-      console.log("Google Sheet Response:", response.data);
       setStatus({ type: "success", message: "Form submitted successfully!" });
       setFormValues({
         fullName: "",
@@ -181,7 +176,6 @@ export default function App() {
         type: "error",
         message: "Submission failed. Please try again.",
       });
-      console.error("Submission error:", error);
     } finally {
       setIsSubmitting(false);
     }

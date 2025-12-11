@@ -316,7 +316,7 @@ export default function App() {
             <div className="poster__content">
               <p className="poster__title">{title}</p>
               <p className="poster__caption">{caption}</p>
-              <img src={} alt="abc" />
+              {/* <img src={} alt="abc" /> */}
             </div>
             <div className="poster__accent" style={{ background: accent }} />
           </div>

@@ -50,10 +50,10 @@ export default function App() {
 
   useEffect(() => {
     // Hide loader when page is fully loaded
-    const handleLoad = () => setIsLoading(false);
+    const handleLoad = () => setIsLoading(true);
     
     if (document.readyState === 'complete') {
-      setIsLoading(false);
+      setIsLoading(true);
     } else {
       window.addEventListener('load', handleLoad);
       return () => window.removeEventListener('load', handleLoad);

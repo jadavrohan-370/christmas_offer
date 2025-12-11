@@ -1,19 +1,83 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import CloudinaryUploader from "./components/Cloudnairy.jsx";
-import axios from "axios";
-import RVlogo from "./Image/RVlogo.png";
-import fotter1 from "./Image/fotter1.png";
+import axios from 'axios';
 
-// const posterCards = [
-//   {
-//     theme: 'night',
-//     Image: '🌃',
-//   },
-//   {
-//     theme: 'christmas',
-//     accent: '#a0171e',
-//   },
-// ];
+const imagePaths = {
+  RVlogo: '/images/RVlogo.png',
+  fotter1: '/images/fotter1.png',
+  bluegiftcard: '/images/Bluegiftcard.png',
+  redgiftcard: '/images/RedGiftcard.png',
+  tree1: '/images/tree1.png',
+};
+
+// Image error handler component
+const SafeImage = ({ src, alt, className, style, ...props }) => {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleError = () => {
+    console.error(`Failed to load image: ${src}`);
+    setImageError(true);
+  };
+
+  const handleLoad = () => {
+    console.log(`Successfully loaded image: ${src}`);
+    setImageLoaded(true);
+  };
+
+  if (imageError) {
+    return (
+      <div
+        className={className}
+        style={{
+          backgroundColor: '#f0f0f0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#666',
+          fontSize: '14px',
+          border: '2px dashed #ccc',
+          ...style
+        }}
+        {...props}
+      >
+        ❌ Failed to load: {alt}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      style={{
+        ...style,
+        opacity: imageLoaded ? 1 : 0.5,
+        transition: 'opacity 0.3s ease'
+      }}
+      onError={handleError}
+      onLoad={handleLoad}
+      {...props}
+    />
+  );
+};
+
+const posterCards = [
+  {
+    theme: 'night',
+    image: imagePaths.bluegiftcard,
+    title: 'Christmas Poster',
+    caption: 'Festive Christmas design for your business'
+  },
+
+  {
+    theme: 'christmas',
+    image: imagePaths.redgiftcard,
+    title: 'New Year Poster',
+    caption: 'Celebrate New Year with style'
+  },
+];
 
 const services = [
   { label: "Web Development", icon: <i className="fas fa-code"></i> },
@@ -47,11 +111,20 @@ export default function App() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (
-      window.location.protocol === "http:" &&
-      window.location.hostname === "www.reimvibetechnologies.com"
-    ) {
-      window.location.href = "https://www.reimvibetechnologies.com/";
+    if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
+      window.location.href = 'https://www.reimvibetechnologies.com/';
+    }
+  }, []);
+
+  useEffect(() => {
+    // Hide loader when page is fully loaded
+    const handleLoad = () => setIsLoading(true);
+
+    if (document.readyState === 'complete') {
+      setIsLoading(true);
+    } else {
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
     }
   }, []);
 
@@ -265,13 +338,17 @@ export default function App() {
             and flyer—absolutely free!
           </p>
         </div>
-        <div className="tree-card" aria-hidden="true">
-          <div className="tree-card__tree">
-            {/* <img src="Image/tree2.png"/>background-image:url(../Image/tree2.png);
-  width: 160px;
-  height: 200px;
- */}
+
+        <div className="festive-elements">
+          <div className="festive-card tree-card" aria-hidden="true">
+            <div className="tree-card__tree"></div>
           </div>
+          {/*<div className="festive-card santa-card" aria-hidden="true">
+            <SafeImage src={imagePaths.santa} alt="Santa Claus" className="festive-image" />
+          </div>
+          <div className="festive-card gift-card" aria-hidden="true">
+            <SafeImage src={imagePaths.gift} alt="Christmas Gift" className="festive-image" />
+          </div> */}
         </div>
       </section>
 
@@ -323,8 +400,9 @@ export default function App() {
             </a>
           ))}
         </div>
-        <img
-          src={fotter1}
+
+        <SafeImage
+          src={imagePaths.fotter1}
           className="img-fluid footer-image"
           alt="Festive Christmas and New Year poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
         />
@@ -341,14 +419,18 @@ function Logo() {
   return (
     <div className="logo">
       <div className="logo__mark">
-        <img src={RVlogo} alt="ReimVibe Technologies Logo" />
+        <SafeImage
+          src={imagePaths.RVlogo}
+          alt="ReimVibe Technologies Logo"
+          style={{ width: '100%', height: '100%' }}
+        />
       </div>
       <span className="logo__text">ReimVibe Technologies</span>
     </div>
   );
 }
 
-function PosterCard({ title, caption, theme, accent, Image }) {
+function PosterCard({ title, caption, theme, image }) {
   return (
     <div className={`poster poster--${theme}`}>
       <div className="poster__overlay" />
@@ -357,7 +439,7 @@ function PosterCard({ title, caption, theme, accent, Image }) {
         <p className="poster__caption">{caption}</p>
         <img src={Image} alt="abc" />
       </div>
-      <div className="poster__accent" style={{ background: accent }} />
+      {image && <SafeImage src={image} className="poster__image" alt={`${theme} poster`} />}
     </div>
   );
 }

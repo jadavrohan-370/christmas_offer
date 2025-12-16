@@ -106,9 +106,11 @@ export default function App() {
     businessLogo: "",
     contact: "",
   });
+
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
 
   useEffect(() => {
     if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
@@ -128,6 +130,30 @@ export default function App() {
     }
   }, []);
 
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'fullName':
+        return !value.trim() ? 'Full name is required' : '';
+      case 'businessName':
+        return !value.trim() ? 'Business name is required' : '';
+      case 'email':
+        if (!value.trim()) return 'Email is required';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return !emailRegex.test(value) ? 'Please enter a valid email address' : '';
+      case 'address':
+        return !value.trim() ? 'Address is required' : '';
+      case 'contact':
+        if (!value.trim()) return 'Contact number is required';
+        const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+        return !phoneRegex.test(value) ? 'Please enter a valid contact number' : '';
+      default:
+        return '';
+    }
+  };
+
   const canSubmit = useMemo(
     () =>
       formValues.fullName.trim() &&
@@ -141,13 +167,60 @@ export default function App() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  const handleBlur = (event) => {
+    const { name, value } = event.target;
+    setTouched(prev => ({ ...prev, [name]: true }));
+    
+    const error = validateField(name, value);
+    setErrors(prev => ({ ...prev, [name]: error }));
+  };
+
+  const getFieldError = (fieldName) => {
+    return touched[fieldName] ? errors[fieldName] : '';
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    // Pre-validate all required fields
+    const requiredFields = ['fullName', 'businessName', 'email', 'address', 'contact'];
+    const newErrors = {};
+    const newTouched = {};
+    let hasErrors = false;
+
+    // Validate and mark all fields as touched
+    requiredFields.forEach(field => {
+      const error = validateField(field, formValues[field]);
+      if (error) {
+        newErrors[field] = error;
+        hasErrors = true;
+      }
+      newTouched[field] = true;
+    });
+
+    setErrors(newErrors);
+    setTouched(newTouched);
+
+    // If there are validation errors, show message and stop
+    if (hasErrors) {
+      setStatus({ 
+        type: "error", 
+        message: "Please fill in all required fields correctly before submitting." 
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     setStatus(null);
 
+    // Prepare form data with proper handling of empty values
     const params = new URLSearchParams();
     params.append("fullName", formValues.fullName);
     params.append("businessName", formValues.businessName);
@@ -173,6 +246,19 @@ export default function App() {
         businessLogo: "",
         contact: "",
       });
+
+      // Clear all validation states
+      setErrors({});
+      setTouched({});
+      
+      // Reset the upload component
+      setResetKey(prev => prev + 1);
+      
+      // Auto-hide success message after 8 seconds
+      setTimeout(() => {
+        setStatus(null);
+      }, 8000);
+      
     } catch (error) {
       setStatus({
         type: "error",
@@ -209,51 +295,73 @@ export default function App() {
         <div className="hero__form">
           <div className="card">
             <h2 className="card__title">Free Registration Form</h2>
+
             <form className="form" onSubmit={handleSubmit}>
-              <label className="form__label">
-                Full Name*
+              <label className={`form__label ${getFieldError('fullName') ? 'form__label--error' : ''}`}>
+                <span className="form__label-text">Full Name*</span>
                 <input
                   type="text"
                   name="fullName"
                   value={formValues.fullName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="Jane Doe"
-                  required
+                  className={getFieldError('fullName') ? 'form__input--error' : ''}
                 />
+                {getFieldError('fullName') && (
+                  <span className="form__error-message">{getFieldError('fullName')}</span>
+                )}
               </label>
-              <label className="form__label">
-                Business Name
+              
+              <label className={`form__label ${getFieldError('businessName') ? 'form__label--error' : ''}`}>
+                <span className="form__label-text">Business Name</span>
                 <input
                   type="text"
                   name="businessName"
                   value={formValues.businessName}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="ReimVibe Technologies"
-                  required
+                  className={getFieldError('businessName') ? 'form__input--error' : ''}
                 />
+                {getFieldError('businessName') && (
+                  <span className="form__error-message">{getFieldError('businessName')}</span>
+                )}
               </label>
-              <label className="form__label">
-                Email Address*
+              
+              <label className={`form__label ${getFieldError('email') ? 'form__label--error' : ''}`}>
+                <span className="form__label-text">Email Address*</span>
                 <input
                   type="email"
                   name="email"
                   value={formValues.email}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="you@example.com"
-                  required
+                  className={getFieldError('email') ? 'form__input--error' : ''}
                 />
+                {getFieldError('email') && (
+                  <span className="form__error-message">{getFieldError('email')}</span>
+                )}
               </label>
-              <label className="form__label">
-                Address
+              
+              <label className={`form__label ${getFieldError('address') ? 'form__label--error' : ''}`}>
+                <span className="form__label-text">Address</span>
                 <input
                   type="text"
                   name="address"
                   value={formValues.address}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="Add Address"
-                  required
+                  className={getFieldError('address') ? 'form__input--error' : ''}
                 />
+                {getFieldError('address') && (
+                  <span className="form__error-message">{getFieldError('address')}</span>
+                )}
               </label>
+              
+
               <label className="form__label">
                 Business Logo (optional)
                 <CloudinaryUploader
@@ -262,18 +370,23 @@ export default function App() {
                   }
                 />
               </label>
-              <label className="form__label">
-                Contact No
+              
+              <label className={`form__label ${getFieldError('contact') ? 'form__label--error' : ''}`}>
+                <span className="form__label-text">Contact No</span>
                 <input
                   type="tel"
                   name="contact"
                   value={formValues.contact}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder="+91"
                   minLength={10}
                   maxLength={10}
-                  required
+                  className={getFieldError('contact') ? 'form__input--error' : ''}
                 />
+                {getFieldError('contact') && (
+                  <span className="form__error-message">{getFieldError('contact')}</span>
+                )}
               </label>
               <button
                 type="submit"
@@ -283,7 +396,7 @@ export default function App() {
                 {isSubmitting ? (
                   <>
                     <span className="spinner"></span>
-                    Submitting...
+                    <span className="btn__text">Submitting...</span>
                   </>
                 ) : (
                   "Submit"

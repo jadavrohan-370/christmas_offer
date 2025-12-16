@@ -574,9 +574,111 @@ body {
   color: #0e8c4e;
 }
 
+
 .form__status--error {
   background: #ffecef;
   color: #a0182c;
+}
+
+/* Success State Styles */
+.success-state {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.success-content {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.success-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.success-logo {
+  max-width: 120px;
+  max-height: 120px;
+  border-radius: 12px;
+  border: 2px solid #e6edff;
+  object-fit: contain;
+  box-shadow: 0 8px 20px rgba(0, 128, 72, 0.15);
+  background: #f8fbff;
+  padding: 10px;
+}
+
+.success-logo-text {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  font-weight: 600;
+}
+
+.success-message {
+  font-size: 16px;
+  color: #1a2740;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0 10px;
+}
+
+.success-details {
+  font-size: 14px;
+  color: #4a5568;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 10px;
+}
+
+.btn--secondary {
+  background: #0e8c4e;
+  margin-top: 10px;
+}
+
+.btn--secondary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(74, 85, 104, 0.25);
+}
+
+/* Mobile responsive styles for success state */
+@media (max-width: 640px) {
+  .success-state {
+    padding: 16px 0;
+  }
+  
+  .success-content {
+    gap: 14px;
+    margin-top: 16px;
+  }
+  
+  .success-logo {
+    max-width: 100px;
+    max-height: 100px;
+    padding: 8px;
+  }
+  
+  .success-logo-text {
+    font-size: 13px;
+  }
+  
+  .success-message {
+    font-size: 15px;
+    padding: 0 8px;
+  }
+  
+  .success-details {
+    font-size: 13px;
+    padding: 0 8px;
+  }
+  
+  .btn--secondary {
+    margin-top: 12px;
+    padding: 14px 20px;
+  }
 }
 
 .poster-grid {

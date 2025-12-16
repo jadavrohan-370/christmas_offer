@@ -107,10 +107,12 @@ export default function App() {
     contact: "",
   });
 
+
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [resetKey, setResetKey] = useState(0);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
@@ -182,8 +184,25 @@ export default function App() {
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
+
   const getFieldError = (fieldName) => {
     return touched[fieldName] ? errors[fieldName] : '';
+  };
+
+  const handleSubmitAnother = () => {
+    setIsSubmitted(false);
+    setStatus(null);
+    setFormValues({
+      fullName: "",
+      businessName: "",
+      email: "",
+      address: "",
+      businessLogo: "",
+      contact: "",
+    });
+    setErrors({});
+    setTouched({});
+    setResetKey(prev => prev + 1);
   };
 
   const handleSubmit = async (event) => {
@@ -254,10 +273,14 @@ export default function App() {
       // Reset the upload component
       setResetKey(prev => prev + 1);
       
+
       // Auto-hide success message after 8 seconds
       setTimeout(() => {
         setStatus(null);
       }, 8000);
+      
+      // Set submitted state to hide form and show success state
+      setIsSubmitted(true);
       
     } catch (error) {
       setStatus({
@@ -292,125 +315,158 @@ export default function App() {
             festive creatives.
           </p>
         </div>
+
         <div className="hero__form">
           <div className="card">
-            <h2 className="card__title">Free Registration Form</h2>
+            {!isSubmitted ? (
+              <>
+                <h2 className="card__title">Free Registration Form</h2>
 
-            <form className="form" onSubmit={handleSubmit}>
-              <label className={`form__label ${getFieldError('fullName') ? 'form__label--error' : ''}`}>
-                <span className="form__label-text">Full Name*</span>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={formValues.fullName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="Jane Doe"
-                  className={getFieldError('fullName') ? 'form__input--error' : ''}
-                />
-                {getFieldError('fullName') && (
-                  <span className="form__error-message">{getFieldError('fullName')}</span>
-                )}
-              </label>
-              
-              <label className={`form__label ${getFieldError('businessName') ? 'form__label--error' : ''}`}>
-                <span className="form__label-text">Business Name</span>
-                <input
-                  type="text"
-                  name="businessName"
-                  value={formValues.businessName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="ReimVibe Technologies"
-                  className={getFieldError('businessName') ? 'form__input--error' : ''}
-                />
-                {getFieldError('businessName') && (
-                  <span className="form__error-message">{getFieldError('businessName')}</span>
-                )}
-              </label>
-              
-              <label className={`form__label ${getFieldError('email') ? 'form__label--error' : ''}`}>
-                <span className="form__label-text">Email Address*</span>
-                <input
-                  type="email"
-                  name="email"
-                  value={formValues.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="you@example.com"
-                  className={getFieldError('email') ? 'form__input--error' : ''}
-                />
-                {getFieldError('email') && (
-                  <span className="form__error-message">{getFieldError('email')}</span>
-                )}
-              </label>
-              
-              <label className={`form__label ${getFieldError('address') ? 'form__label--error' : ''}`}>
-                <span className="form__label-text">Address</span>
-                <input
-                  type="text"
-                  name="address"
-                  value={formValues.address}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="Add Address"
-                  className={getFieldError('address') ? 'form__input--error' : ''}
-                />
-                {getFieldError('address') && (
-                  <span className="form__error-message">{getFieldError('address')}</span>
-                )}
-              </label>
-              
+                <form className="form" onSubmit={handleSubmit}>
+                  <label className={`form__label ${getFieldError('fullName') ? 'form__label--error' : ''}`}>
+                    <span className="form__label-text">Full Name*</span>
+                    <input
+                      type="text"
+                      name="fullName"
+                      value={formValues.fullName}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Jane Doe"
+                      className={getFieldError('fullName') ? 'form__input--error' : ''}
+                    />
+                    {getFieldError('fullName') && (
+                      <span className="form__error-message">{getFieldError('fullName')}</span>
+                    )}
+                  </label>
+                  
+                  <label className={`form__label ${getFieldError('businessName') ? 'form__label--error' : ''}`}>
+                    <span className="form__label-text">Business Name</span>
+                    <input
+                      type="text"
+                      name="businessName"
+                      value={formValues.businessName}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="ReimVibe Technologies"
+                      className={getFieldError('businessName') ? 'form__input--error' : ''}
+                    />
+                    {getFieldError('businessName') && (
+                      <span className="form__error-message">{getFieldError('businessName')}</span>
+                    )}
+                  </label>
+                  
+                  <label className={`form__label ${getFieldError('email') ? 'form__label--error' : ''}`}>
+                    <span className="form__label-text">Email Address*</span>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formValues.email}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="you@example.com"
+                      className={getFieldError('email') ? 'form__input--error' : ''}
+                    />
+                    {getFieldError('email') && (
+                      <span className="form__error-message">{getFieldError('email')}</span>
+                    )}
+                  </label>
+                  
+                  <label className={`form__label ${getFieldError('address') ? 'form__label--error' : ''}`}>
+                    <span className="form__label-text">Address</span>
+                    <input
+                      type="text"
+                      name="address"
+                      value={formValues.address}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="Add Address"
+                      className={getFieldError('address') ? 'form__input--error' : ''}
+                    />
+                    {getFieldError('address') && (
+                      <span className="form__error-message">{getFieldError('address')}</span>
+                    )}
+                  </label>
+                  
 
-              <label className="form__label">
-                Business Logo (optional)
-                <CloudinaryUploader
-                  onUpload={(url) =>
-                    setFormValues((prev) => ({ ...prev, businessLogo: url }))
-                  }
-                />
-              </label>
-              
-              <label className={`form__label ${getFieldError('contact') ? 'form__label--error' : ''}`}>
-                <span className="form__label-text">Contact No</span>
-                <input
-                  type="tel"
-                  name="contact"
-                  value={formValues.contact}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="+91"
-                  minLength={10}
-                  maxLength={10}
-                  className={getFieldError('contact') ? 'form__input--error' : ''}
-                />
-                {getFieldError('contact') && (
-                  <span className="form__error-message">{getFieldError('contact')}</span>
-                )}
-              </label>
-              <button
-                type="submit"
-                className="btn"
-                disabled={!canSubmit || isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <span className="spinner"></span>
-                    <span className="btn__text">Submitting...</span>
-                  </>
-                ) : (
-                  "Submit"
-                )}
-              </button>
-              {status && (
-                <p
-                  className={`form__status form__status--${status.type}`}
-                  role="status"
-                >
-                  {status.message}
-                </p>
-              )}
-            </form>
+                  <label className="form__label">
+                    Business Logo (optional)
+                    <CloudinaryUploader
+                      onUpload={(url) =>
+                        setFormValues((prev) => ({ ...prev, businessLogo: url }))
+                      }
+                      resetKey={resetKey}
+                    />
+                  </label>
+                  
+                  <label className={`form__label ${getFieldError('contact') ? 'form__label--error' : ''}`}>
+                    <span className="form__label-text">Contact No</span>
+                    <input
+                      type="tel"
+                      name="contact"
+                      value={formValues.contact}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      placeholder="+91"
+                      minLength={10}
+                      maxLength={10}
+                      className={getFieldError('contact') ? 'form__input--error' : ''}
+                    />
+                    {getFieldError('contact') && (
+                      <span className="form__error-message">{getFieldError('contact')}</span>
+                    )}
+                  </label>
+                  <button
+                    type="submit"
+                    className="btn"
+                    disabled={!canSubmit || isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <span className="spinner"></span>
+                        <span className="btn__text">Submitting...</span>
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </button>
+                  {status && (
+                    <p
+                      className={`form__status form__status--${status.type}`}
+                      role="status"
+                    >
+                      {status.message}
+                    </p>
+                  )}
+                </form>
+              </>
+            ) : (
+              <div className="success-state">
+                <h2 className="card__title">🎉 Registration Successful!</h2>
+                <div className="success-content">
+                  {formValues.businessLogo && (
+                    <div className="success-logo-container">
+                      <img 
+                        src={formValues.businessLogo} 
+                        alt="Your Business Logo" 
+                        className="success-logo"
+                      />
+                      <p className="success-logo-text">Your Business Logo</p>
+                    </div>
+                  )}
+                  <p className="success-message">
+                    Thank you for registering! We'll Contact you for Christmas & New Year 
+                    creatives to you
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn--secondary"
+                    onClick={handleSubmitAnother}
+                  >
+                    Submit Another Response
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </header>

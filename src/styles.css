@@ -272,8 +272,6 @@ body {
   box-shadow: 0 12px 22px rgba(0, 128, 72, 0.18);
 }
 
-
-
 .file-upload-btn {
   display: inline-flex;
   align-items: center;
@@ -500,7 +498,6 @@ body {
   margin-top: 4px;
   font-weight: 500;
 }
-
 
 /* Enhanced mobile responsiveness for upload components */
 @media (max-width: 640px) {
@@ -970,7 +967,6 @@ a {
   flex: 0 0 120px;
 }
 
-
 .site-header .logo__mark img {
   width: 100%;
   height: 100%;
@@ -1200,6 +1196,8 @@ a {
 
   .eyebrow {
     font-size: 28px;
+    top: 25px;
+    position: relative;
   }
 
   .center {
@@ -1236,8 +1234,8 @@ a {
   }
 
   .site-header .logo {
-    left: 20px;
-    top: 20px;
+    left: -20px;
+    top: -25px;
   }
 
   .site-header .logo__mark {
@@ -1267,6 +1265,8 @@ a {
 
   .eyebrow {
     font-size: 32px;
+    position: relative;
+    top: 20%;
   }
 
   .center {
@@ -1296,8 +1296,8 @@ a {
   }
 
   .site-header .logo {
-    left: 24px;
-    top: 24px;
+    left: 1%;
+    top: -3%;
   }
 
   .site-header .logo__mark {

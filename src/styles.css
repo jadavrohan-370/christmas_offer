@@ -961,7 +961,6 @@ a {
   letter-spacing: 0.2px;
   padding: 10px 14px;
   border-radius: 12px;
-  backdrop-filter: saturate(180%) blur(10px);
 }
 
 .site-header .logo__mark {

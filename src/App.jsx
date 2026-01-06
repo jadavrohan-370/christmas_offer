@@ -9,7 +9,9 @@ const imagePaths = {
   kite1: "/images/patan1.png",
   kite2: "/images/patan2.png",
   kite3: "/images/santa.png",
-  banner:"/images/p3.jpeg"
+  banner:"/images/p3.jpeg",
+  mainkite:"/images/leftside.png",
+  footer:"/images/footer.png",
 };
 
 // Image error handler component
@@ -315,11 +317,11 @@ export default function App() {
           <Logo />
           <p className="eyebrow">A Festive Gift for You!</p>
           <h3 className="headline">
-            Let your business celebrate with free Makarsankarnti ; 
+            Let your business celebrate with free MakarSankranti
             creatives.
           </h3>
           <p className="body">
-            Register now and receive a professionally designed Makarsankarnti
+            Register now and receive a professionally designed MakarSankranti
              poster/flyer absolutely free. Whether you&apos;re a
             business, brand, or company, this festive gift is for all
             registrants.
@@ -544,7 +546,7 @@ export default function App() {
       </header>
 
       <section className="section">
-        <p className="eyebrow center">Free Poster For Makarsankrnti</p>
+        <p className="eyebrow center">Free Poster For MakarSankranti</p>
         <div className="floating-kite floating-kite--1">🪁</div>
         <div className="floating-kite floating-kite--2">🪁</div>
         <div className="poster-grid">
@@ -562,24 +564,26 @@ export default function App() {
 
       <section className="section section--two-column">
         <div>
-          <p className="eyebrow">Makarsankrati wish and party</p>
+          <p className="eyebrow">MakarSankranti wish and party</p>
           <div className="floating-banner floating-banner--1">✨</div>
           <p className="body">
-            Fill your Makarsankranti holiday with joyful decorations, and
+            Fill your MakarSankranti holiday with joyful decorations, and
             unforgettable experiences. Join our festive event with your family
             and children, and celebrate the most magical holiday of the year.
             From heartwarming carols to fun activities for all ages, there is
             something special for everyone.
           </p>
           <p className="body strong">
-            Register now and receive an exclusive Makarsankrati and 
+            Register now and receive an exclusive MakarSankranti and 
             poster and flyer—absolutely free!
           </p>
         </div>
 
         <div className="festive-elements">
           <div className="festive-card tree-card" aria-hidden="true">
-            <div className="tree-card__tree"></div>
+            <div className="tree-card__tree">
+              <img src={imagePaths.mainkite} alt="Decorative kite" />
+            </div>
           </div>
           {/*<div className="festive-card santa-card" aria-hidden="true">
             <SafeImage src={imagePaths.santa} alt="Santa Claus" className="festive-image" />
@@ -647,7 +651,7 @@ export default function App() {
         </div>
 
         <SafeImage
-          src={imagePaths.fotter1}
+          src={imagePaths.footer}
           className="img-fluid footer-image"
           alt="Festive  MakarSankranti  poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
         />

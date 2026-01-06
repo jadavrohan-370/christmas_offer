@@ -90,8 +90,12 @@ body {
 .hero__form {
   display: flex;
   justify-content: center;
+  align-items: center;
   position: relative;
   width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  flex-direction: column;
 }
 
 .kites-decoration {
@@ -226,11 +230,16 @@ body {
 
 .card {
   width: min(420px, 100%);
-  padding: 24px;
+  padding: clamp(16px, 4vw, 24px);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.98);
   box-shadow: 0 18px 45px rgba(255, 165, 0, 0.25);
   border: 2px solid #ffd700;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card__title {
@@ -263,12 +272,14 @@ body {
 
 .form input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-radius: 8px;
   border: 2px solid #ffd700;
   background: #fffacd;
-  font-size: 14px;
+  font-size: clamp(14px, 2vw, 16px);
   color: #273666;
+  min-height: 44px;
+  transition: all 0.2s ease;
 }
 
 
@@ -290,7 +301,7 @@ body {
 
 .btn {
   margin-top: 6px;
-  padding: 12px 18px;
+  padding: clamp(12px, 3vw, 18px) clamp(16px, 4vw, 24px);
   border: none;
   border-radius: 10px;
   background: linear-gradient(135deg, #e4572e, #d4412a);
@@ -298,6 +309,9 @@ body {
   font-weight: 700;
   cursor: pointer;
   transition: transform 120ms ease, box-shadow 120ms ease;
+  min-height: 44px;
+  font-size: clamp(14px, 2vw, 16px);
+  width: 100%;
 }
 
 .btn:disabled {
@@ -820,7 +834,6 @@ body {
   gap: 20px;
 }
 
-
 .poster {
   position: relative;
   width: 25rem;
@@ -906,11 +919,10 @@ body {
   align-items: center;
 }
 
-/* Festive elements styling */
 .festive-elements {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(150px, 30vw, 250px), 1fr));
+  gap: clamp(12px, 4vw, 20px);
   align-items: center;
 }
 
@@ -918,7 +930,7 @@ body {
   border-radius: 16px;
   overflow: hidden;
   /* box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18); */
-  border: 1px solid #e6edff;
+  border: none;
   /* background: #fff; */
   display: flex;
   align-items: center;
@@ -948,7 +960,7 @@ body {
   border-radius: 16px;
   overflow: hidden;
   /* box-shadow: 0 14px 34px rgba(22, 32, 63, 0.18); */
-  border: 1px solid #e6edff;
+  border: none;
 }
 
 .festive-image {
@@ -971,15 +983,31 @@ body {
 
 
 .tree-card {
-  padding: 300px;
+  padding: clamp(60px, 20vw, 300px);
   place-items: center;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  min-height: clamp(200px, 50vw, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tree-card__tree {
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.12));
+  width: clamp(100px, 50vw, 300px);
+  height: clamp(100px, 50vw, 300px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tree-card__tree img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }
 
 /* Kite Card Styles */
@@ -1356,6 +1384,229 @@ a {
   }
 }
 
+/* Extra small devices (320px to 480px) */
+@media (max-width: 480px) {
+  .section {
+    padding: 32px 12px;
+  }
+
+  .hero__form {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .kites-decoration {
+    display: none !important;
+  }
+
+  .hero {
+    gap: 16px;
+  }
+
+  .headline {
+    font-size: clamp(20px, 5vw, 26px);
+    line-height: 1.2;
+  }
+
+  .eyebrow {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+
+  .card {
+    width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+    padding: 12px;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .card__title {
+    font-size: 18px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .form {
+    gap: 10px;
+    width: 100%;
+  }
+
+  .form__label {
+    width: 100%;
+  }
+
+  .form__label-text {
+    font-size: 12px;
+  }
+
+  .form input {
+    padding: 10px 12px;
+    font-size: 16px;
+    min-height: 44px;
+    border-radius: 6px;
+    width: 100%;
+  }
+
+  .btn {
+    padding: 12px 14px;
+    font-size: 14px;
+    min-height: 44px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .kite-card {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+  }
+
+  .kites-decoration {
+    justify-content: center;
+  }
+
+  .poster {
+    min-height: 180px;
+  }
+
+  .tree-card {
+    padding: clamp(30px, 10vw, 60px);
+    min-height: clamp(120px, 35vw, 200px);
+  }
+
+  .tree-card__tree {
+    width: clamp(60px, 35vw, 140px);
+    height: clamp(60px, 35vw, 140px);
+  }
+
+  .festive-card {
+    min-height: 140px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-pill {
+    padding: 10px 12px;
+    font-size: 12px;
+    min-height: 40px;
+  }
+
+  .footer__contacts {
+    gap: 6px;
+  }
+
+  .contact-item {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .site-header .logo {
+    gap: 8px;
+    margin-bottom: 12px;
+    justify-content: center;
+  }
+
+  .site-header .logo__mark {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+  }
+
+  .site-header .logo__text {
+    font-size: 13px;
+  }
+}
+
+/* Large Desktop (1440px and above) */
+@media (min-width: 1440px) {
+  .section {
+    padding: 80px min(8vw, 100px);
+  }
+
+  .hero {
+    gap: 60px;
+  }
+
+  .headline {
+    font-size: 52px;
+  }
+
+  .eyebrow {
+    font-size: 44px;
+  }
+
+  .card {
+    width: min(450px, 100%);
+    padding: 28px;
+  }
+
+  .form {
+    gap: 14px;
+  }
+
+  .form input {
+    padding: 14px 16px;
+    font-size: 16px;
+    min-height: 48px;
+  }
+
+  .btn {
+    padding: 16px 24px;
+    font-size: 16px;
+    min-height: 52px;
+  }
+
+  .poster-grid {
+    gap: 24px;
+  }
+
+  .poster,
+  .poster--christmas {
+    width: 28rem;
+    height: 28rem;
+  }
+
+  .section--two-column {
+    gap: 60px;
+  }
+
+  .tree-card {
+    padding: 350px;
+    min-height: 450px;
+  }
+
+  .tree-card__tree {
+    width: 350px;
+    height: 350px;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .festive-elements {
+    gap: 24px;
+  }
+
+  .festive-card {
+    height: 280px;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* Mobile Styles (up to 640px) */
 @media (max-width: 640px) {
   .floating-kite,
@@ -1413,6 +1664,10 @@ a {
     padding: 0;
   }
 
+  .kites-decoration {
+    display: none !important;
+  }
+
   .kite-decoration {
     font-size: 40px;
   }
@@ -1423,86 +1678,130 @@ a {
   }
 
   .section {
-    padding: 48px 20px;
+    padding: 40px 16px;
   }
 
   .hero {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 24px;
+  }
+
+  .hero__form {
+    width: 100%;
+    padding: 0;
   }
 
   .headline {
-    font-size: 28px;
+    font-size: clamp(24px, 6vw, 32px);
   }
 
   .eyebrow {
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 20px);
   }
 
   .center {
-    font-size: 24px;
+    font-size: clamp(18px, 5vw, 24px);
   }
 
   .card {
-    width: 100%;
-    padding: 20px;
+    width: calc(100% - 32px);
+    padding: 16px;
+    margin: 0 auto;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .card__title {
-    font-size: 20px;
+    font-size: clamp(18px, 4vw, 22px);
+    margin-bottom: 16px;
+    text-align: center;
   }
 
   .form {
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
   }
 
   .form__label {
     font-size: 13px;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .form__label-text {
+    font-size: clamp(13px, 3vw, 14px);
   }
 
   .form input {
     padding: 12px;
     font-size: 16px;
-    /* Prevent zoom on iOS */
+    min-height: 48px;
+    width: 100%;
   }
 
   .btn,
   .file-upload-btn {
-    padding: 14px 20px;
+    padding: 14px 16px;
     font-size: 16px;
+    min-height: 48px;
+    width: 100%;
+  }
+
+  .form__error-message {
+    font-size: 12px;
   }
 
   .poster-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
 
   .poster,
   .poster--christmas {
     width: 100%;
-    height: 20rem;
+    height: auto;
+    aspect-ratio: 1;
+    min-height: 200px;
   }
 
   .poster__content {
-    padding: 20px;
+    padding: 16px;
   }
 
   .poster__title {
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 20px);
   }
 
   .poster__caption {
-    font-size: 13px;
+    font-size: clamp(11px, 3vw, 13px);
     max-width: unset;
   }
 
   .section--two-column {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 20px;
   }
 
   .tree-card {
-    padding: 200px 20px;
+    padding: clamp(40px, 15vw, 100px);
+    min-height: clamp(150px, 40vw, 250px);
+  }
+
+  .tree-card__tree {
+    width: clamp(80px, 40vw, 200px);
+    height: clamp(80px, 40vw, 200px);
+  }
+
+  .festive-elements {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .festive-card {
+    height: auto;
+    min-height: 150px;
   }
 
   .services-grid {
@@ -1512,25 +1811,29 @@ a {
 
   .service-pill {
     padding: 12px 14px;
-    font-size: 14px;
+    font-size: 13px;
+    min-height: 44px;
   }
 
   .footer__contacts {
-    gap: 8px;
+    gap: 10px;
+    flex-direction: column;
   }
 
   .contact-item {
-    padding: 12px 16px;
-    font-size: 14px;
+    padding: 10px 12px;
+    font-size: 13px;
+    word-break: break-word;
   }
 
   .socials {
     gap: 8px;
+    flex-wrap: wrap;
   }
 
   .socials__link {
-    padding: 12px 14px;
-    font-size: 14px;
+    padding: 10px 12px;
+    font-size: 13px;
   }
 
   .site-header .logo {
@@ -1548,82 +1851,180 @@ a {
   }
 
   .site-header .logo__mark {
-    width: 56px;
-    height: 56px;
-    flex: 0 0 56px;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
   }
 
   .site-header .logo__text {
-    font-size: 16px;
+    font-size: clamp(14px, 3vw, 16px);
+  }
+
+  .success-state {
+    padding: 12px 0;
+  }
+
+  .success-logo {
+    max-width: 100px;
+    max-height: 100px;
+    padding: 8px;
+  }
+
+  .success-message {
+    font-size: 14px;
+    line-height: 1.5;
   }
 }
 
 /* Tablet Styles (641px to 1024px) */
 @media (min-width: 641px) and (max-width: 1024px) {
   .section {
-    padding: 60px min(4vw, 60px);
+    padding: clamp(48px, 5vw, 60px) clamp(24px, 4vw, 60px);
   }
 
   .hero {
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
   }
 
   .headline {
-    font-size: 36px;
+    font-size: clamp(28px, 5vw, 36px);
   }
 
   .eyebrow {
-    font-size: 28px;
-    top: 25px;
-    position: relative;
+    font-size: clamp(20px, 4vw, 28px);
   }
 
   .center {
-    font-size: 28px;
+    font-size: clamp(22px, 4vw, 28px);
   }
 
   .card {
     width: min(400px, 100%);
-    padding: 22px;
+    padding: clamp(18px, 3.5vw, 22px);
+  }
+
+  .card__title {
+    font-size: clamp(18px, 3vw, 20px);
+  }
+
+  .form {
+    gap: 11px;
+  }
+
+  .form__label {
+    font-size: 13px;
+  }
+
+  .form input {
+    padding: 11px 13px;
+    font-size: clamp(14px, 1.8vw, 15px);
+    min-height: 46px;
+  }
+
+  .btn {
+    padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 20px);
+    font-size: clamp(14px, 1.8vw, 16px);
+    min-height: 46px;
   }
 
   .poster-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
   }
 
   .poster,
   .poster--christmas {
     width: 100%;
-    height: 22rem;
+    height: auto;
+    aspect-ratio: 1;
+    min-height: 200px;
+  }
+
+  .poster__content {
+    padding: 18px;
+  }
+
+  .poster__title {
+    font-size: clamp(16px, 3vw, 22px);
+  }
+
+  .poster__caption {
+    font-size: clamp(12px, 2.5vw, 14px);
   }
 
   .section--two-column {
-    gap: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
   }
 
   .tree-card {
-    padding: 250px;
+    padding: clamp(80px, 15vw, 200px);
+    min-height: clamp(200px, 45vw, 350px);
+  }
+
+  .tree-card__tree {
+    width: clamp(100px, 45vw, 250px);
+    height: clamp(100px, 45vw, 250px);
+  }
+
+  .festive-elements {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+  }
+
+  .festive-card {
+    height: auto;
+    min-height: 180px;
   }
 
   .services-grid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+  }
+
+  .service-pill {
+    padding: 12px 16px;
+    font-size: clamp(13px, 2vw, 14px);
+    min-height: 46px;
+  }
+
+  .footer__contacts {
+    gap: 12px;
+  }
+
+  .contact-item {
+    padding: 11px 14px;
+    font-size: 13px;
+  }
+
+  .socials {
+    gap: 10px;
+  }
+
+  .socials__link {
+    padding: 11px 14px;
+    font-size: 13px;
   }
 
   .site-header .logo {
-    left: -20px;
-    top: -25px;
+    left: 2%;
+    top: -15%;
   }
 
   .site-header .logo__mark {
-    width: 100px;
-    height: 100px;
-    flex: 0 0 100px;
+    width: 90px;
+    height: 90px;
+    flex: 0 0 90px;
   }
 
   .site-header .logo__text {
-    font-size: 20px;
+    font-size: clamp(16px, 2.5vw, 20px);
+  }
+
+  .success-logo {
+    max-width: 110px;
+    max-height: 110px;
   }
 }
 
@@ -1634,17 +2035,16 @@ a {
   }
 
   .hero {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 48px;
   }
 
   .headline {
-    font-size: 40px;
+    font-size: clamp(36px, 4vw, 48px);
   }
 
   .eyebrow {
-    font-size: 32px;
-    position: relative;
-    top: 20%;
+    font-size: clamp(28px, 3vw, 40px);
   }
 
   .center {
@@ -1653,6 +2053,31 @@ a {
 
   .card {
     width: min(420px, 100%);
+    padding: 24px;
+  }
+
+  .card__title {
+    font-size: 22px;
+  }
+
+  .form {
+    gap: 12px;
+  }
+
+  .form__label {
+    font-size: 14px;
+  }
+
+  .form input {
+    padding: 12px 14px;
+    font-size: 15px;
+    min-height: 44px;
+  }
+
+  .btn {
+    padding: 14px 20px;
+    font-size: 16px;
+    min-height: 48px;
   }
 
   .poster-grid {
@@ -1665,12 +2090,68 @@ a {
     height: 25rem;
   }
 
+  .poster__content {
+    padding: 28px;
+  }
+
+  .poster__title {
+    font-size: 24px;
+  }
+
+  .poster__caption {
+    font-size: 14px;
+  }
+
+  .section--two-column {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 48px;
+  }
+
   .tree-card {
-    padding: 300px;
+    padding: 40px;
+    min-height: 500px;
+  }
+
+  .tree-card__tree {
+    width: 400px;
+    height: 400px;
+  }
+
+  .festive-elements {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .festive-card {
+    height: 250px;
   }
 
   .services-grid {
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .service-pill {
+    padding: 14px 18px;
+    font-size: 15px;
+    min-height: 50px;
+  }
+
+  .footer__contacts {
+    gap: 16px;
+  }
+
+  .contact-item {
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+
+  .socials {
+    gap: 12px;
+  }
+
+  .socials__link {
+    padding: 12px 16px;
+    font-size: 15px;
   }
 
   .site-header .logo {
@@ -1686,5 +2167,10 @@ a {
 
   .site-header .logo__text {
     font-size: 24px;
+  }
+
+  .success-logo {
+    max-width: 140px;
+    max-height: 140px;
   }
 }

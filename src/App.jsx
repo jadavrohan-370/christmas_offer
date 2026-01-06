@@ -1,20 +1,21 @@
-import React, { useMemo, useState, useRef, useEffect } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import CloudinaryUploader from "./components/Cloudnairy.jsx";
-import axios from 'axios';
+import axios from "axios";
 
 const imagePaths = {
-  RVlogo: '/images/RVlogo.png',
-  fotter1: '/images/fotter1.png',
-  bluegiftcard: '/images/Bluegiftcard.png',
-  redgiftcard: '/images/RedGiftcard.png',
-  tree1: '/images/tree1.png',
+  RVlogo: "/images/RVlogo.png",
+  patang1 : "/images/patan1.jpeg",
+  patang2 : "/images/patan2.jpeg",
+  kite1: "/images/patan1.png",
+  kite2: "/images/patan2.png",
+  kite3: "/images/santa.png",
+  banner:"/images/p3.jpeg"
 };
 
 // Image error handler component
 const SafeImage = ({ src, alt, className, style, ...props }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-
 
   const handleError = () => {
     setImageError(true);
@@ -29,14 +30,14 @@ const SafeImage = ({ src, alt, className, style, ...props }) => {
       <div
         className={className}
         style={{
-          backgroundColor: '#f0f0f0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#666',
-          fontSize: '14px',
-          border: '2px dashed #ccc',
-          ...style
+          backgroundColor: "#f0f0f0",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#666",
+          fontSize: "14px",
+          border: "2px dashed #ccc",
+          ...style,
         }}
         {...props}
       >
@@ -53,7 +54,7 @@ const SafeImage = ({ src, alt, className, style, ...props }) => {
       style={{
         ...style,
         opacity: imageLoaded ? 1 : 0.5,
-        transition: 'opacity 0.3s ease'
+        transition: "opacity 0.3s ease",
       }}
       onError={handleError}
       onLoad={handleLoad}
@@ -64,17 +65,17 @@ const SafeImage = ({ src, alt, className, style, ...props }) => {
 
 const posterCards = [
   {
-    theme: 'night',
-    image: imagePaths.bluegiftcard,
-    title: 'Christmas Poster',
-    caption: 'Festive Christmas design for your business'
+    theme: "kite",
+    image: imagePaths.patang2,
+    title: " Kites Festival Poster",
+    caption: "Festive Christmas design for your business",
   },
 
   {
-    theme: 'christmas',
-    image: imagePaths.redgiftcard,
-    title: 'New Year Poster',
-    caption: 'Celebrate New Year with style'
+    theme: "kite2",
+    image: imagePaths.patang1,
+    title: " Poster",
+    caption: "Celebrate  with style",
   },
 ];
 
@@ -107,7 +108,6 @@ export default function App() {
     contact: "",
   });
 
-
   const [status, setStatus] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -115,8 +115,11 @@ export default function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    if (window.location.protocol === 'http:' && window.location.hostname === 'www.reimvibetechnologies.com') {
-      window.location.href = 'https://www.reimvibetechnologies.com/';
+    if (
+      window.location.protocol === "http:" &&
+      window.location.hostname === "www.reimvibetechnologies.com"
+    ) {
+      window.location.href = "https://www.reimvibetechnologies.com/";
     }
   }, []);
 
@@ -124,11 +127,11 @@ export default function App() {
     // Hide loader when page is fully loaded
     const handleLoad = () => setIsLoading(false);
 
-    if (document.readyState === 'complete') {
+    if (document.readyState === "complete") {
       setIsLoading(false);
     } else {
-      window.addEventListener('load', handleLoad);
-      return () => window.removeEventListener('load', handleLoad);
+      window.addEventListener("load", handleLoad);
+      return () => window.removeEventListener("load", handleLoad);
     }
   }, []);
 
@@ -137,22 +140,26 @@ export default function App() {
 
   const validateField = (name, value) => {
     switch (name) {
-      case 'fullName':
-        return !value.trim() ? 'Full name is required' : '';
-      case 'businessName':
-        return !value.trim() ? 'Business name is required' : '';
-      case 'email':
-        if (!value.trim()) return 'Email is required';
+      case "fullName":
+        return !value.trim() ? "Full name is required" : "";
+      case "businessName":
+        return !value.trim() ? "Business name is required" : "";
+      case "email":
+        if (!value.trim()) return "Email is required";
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return !emailRegex.test(value) ? 'Please enter a valid email address' : '';
-      case 'address':
-        return !value.trim() ? 'Address is required' : '';
-      case 'contact':
-        if (!value.trim()) return 'Contact number is required';
+        return !emailRegex.test(value)
+          ? "Please enter a valid email address"
+          : "";
+      case "address":
+        return !value.trim() ? "Address is required" : "";
+      case "contact":
+        if (!value.trim()) return "Contact number is required";
         const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
-        return !phoneRegex.test(value) ? 'Please enter a valid contact number' : '';
+        return !phoneRegex.test(value)
+          ? "Please enter a valid contact number"
+          : "";
       default:
-        return '';
+        return "";
     }
   };
 
@@ -169,24 +176,23 @@ export default function App() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleBlur = (event) => {
     const { name, value } = event.target;
-    setTouched(prev => ({ ...prev, [name]: true }));
-    
+    setTouched((prev) => ({ ...prev, [name]: true }));
+
     const error = validateField(name, value);
-    setErrors(prev => ({ ...prev, [name]: error }));
+    setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
-
   const getFieldError = (fieldName) => {
-    return touched[fieldName] ? errors[fieldName] : '';
+    return touched[fieldName] ? errors[fieldName] : "";
   };
 
   const handleSubmitAnother = () => {
@@ -202,20 +208,26 @@ export default function App() {
     });
     setErrors({});
     setTouched({});
-    setResetKey(prev => prev + 1);
+    setResetKey((prev) => prev + 1);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     // Pre-validate all required fields
-    const requiredFields = ['fullName', 'businessName', 'email', 'address', 'contact'];
+    const requiredFields = [
+      "fullName",
+      "businessName",
+      "email",
+      "address",
+      "contact",
+    ];
     const newErrors = {};
     const newTouched = {};
     let hasErrors = false;
 
     // Validate and mark all fields as touched
-    requiredFields.forEach(field => {
+    requiredFields.forEach((field) => {
       const error = validateField(field, formValues[field]);
       if (error) {
         newErrors[field] = error;
@@ -229,9 +241,10 @@ export default function App() {
 
     // If there are validation errors, show message and stop
     if (hasErrors) {
-      setStatus({ 
-        type: "error", 
-        message: "Please fill in all required fields correctly before submitting." 
+      setStatus({
+        type: "error",
+        message:
+          "Please fill in all required fields correctly before submitting.",
       });
       return;
     }
@@ -269,19 +282,17 @@ export default function App() {
       // Clear all validation states
       setErrors({});
       setTouched({});
-      
+
       // Reset the upload component
-      setResetKey(prev => prev + 1);
-      
+      setResetKey((prev) => prev + 1);
 
       // Auto-hide success message after 8 seconds
       setTimeout(() => {
         setStatus(null);
       }, 8000);
-      
+
       // Set submitted state to hide form and show success state
       setIsSubmitted(true);
-      
     } catch (error) {
       setStatus({
         type: "error",
@@ -297,33 +308,54 @@ export default function App() {
       <PageLoader isLoading={isLoading} />
       <GradientBackground />
       <header className="hero section site-header">
+        <div className="uttarayan-banner uttarayan-banner--left">🎯 🪁 ✨</div>
+        <div className="uttarayan-banner uttarayan-banner--right">✨ 🪁 🎯</div>
+
         <div className="hero__copy">
           <Logo />
           <p className="eyebrow">A Festive Gift for You!</p>
           <h3 className="headline">
-            Let your business celebrate with free Christmas &amp; New Year
+            Let your business celebrate with free Makarsankarnti ; 
             creatives.
           </h3>
           <p className="body">
-            Register now and receive a professionally designed Christmas &amp;
-            New Year poster/flyer absolutely free. Whether you&apos;re a
+            Register now and receive a professionally designed Makarsankarnti
+             poster/flyer absolutely free. Whether you&apos;re a
             business, brand, or company, this festive gift is for all
             registrants.
           </p>
           <p className="body">
-            Don&apos;t miss this chance to start the New Year with fresh,
+            Don&apos;t miss this chance to start the with fresh,
             festive creatives.
           </p>
         </div>
 
         <div className="hero__form">
+          <div className="kites-decoration">
+            <div
+              className="festive-card kite-card kite-card--1"
+              aria-hidden="true"
+            >
+              <div className="kite-decoration">🪁</div>
+            </div>
+            <div
+              className="festive-card kite-card kite-card--2"
+              aria-hidden="true"
+            >
+              <div className="kite-decoration">🪁</div>
+            </div>
+          </div>
           <div className="card">
             {!isSubmitted ? (
               <>
                 <h2 className="card__title">Free Registration Form</h2>
 
                 <form className="form" onSubmit={handleSubmit}>
-                  <label className={`form__label ${getFieldError('fullName') ? 'form__label--error' : ''}`}>
+                  <label
+                    className={`form__label ${
+                      getFieldError("fullName") ? "form__label--error" : ""
+                    }`}
+                  >
                     <span className="form__label-text">Full Name*</span>
                     <input
                       type="text"
@@ -332,14 +364,22 @@ export default function App() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Jane Doe"
-                      className={getFieldError('fullName') ? 'form__input--error' : ''}
+                      className={
+                        getFieldError("fullName") ? "form__input--error" : ""
+                      }
                     />
-                    {getFieldError('fullName') && (
-                      <span className="form__error-message">{getFieldError('fullName')}</span>
+                    {getFieldError("fullName") && (
+                      <span className="form__error-message">
+                        {getFieldError("fullName")}
+                      </span>
                     )}
                   </label>
-                  
-                  <label className={`form__label ${getFieldError('businessName') ? 'form__label--error' : ''}`}>
+
+                  <label
+                    className={`form__label ${
+                      getFieldError("businessName") ? "form__label--error" : ""
+                    }`}
+                  >
                     <span className="form__label-text">Business Name</span>
                     <input
                       type="text"
@@ -348,14 +388,24 @@ export default function App() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="ReimVibe Technologies"
-                      className={getFieldError('businessName') ? 'form__input--error' : ''}
+                      className={
+                        getFieldError("businessName")
+                          ? "form__input--error"
+                          : ""
+                      }
                     />
-                    {getFieldError('businessName') && (
-                      <span className="form__error-message">{getFieldError('businessName')}</span>
+                    {getFieldError("businessName") && (
+                      <span className="form__error-message">
+                        {getFieldError("businessName")}
+                      </span>
                     )}
                   </label>
-                  
-                  <label className={`form__label ${getFieldError('email') ? 'form__label--error' : ''}`}>
+
+                  <label
+                    className={`form__label ${
+                      getFieldError("email") ? "form__label--error" : ""
+                    }`}
+                  >
                     <span className="form__label-text">Email Address*</span>
                     <input
                       type="email"
@@ -364,14 +414,22 @@ export default function App() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="you@example.com"
-                      className={getFieldError('email') ? 'form__input--error' : ''}
+                      className={
+                        getFieldError("email") ? "form__input--error" : ""
+                      }
                     />
-                    {getFieldError('email') && (
-                      <span className="form__error-message">{getFieldError('email')}</span>
+                    {getFieldError("email") && (
+                      <span className="form__error-message">
+                        {getFieldError("email")}
+                      </span>
                     )}
                   </label>
-                  
-                  <label className={`form__label ${getFieldError('address') ? 'form__label--error' : ''}`}>
+
+                  <label
+                    className={`form__label ${
+                      getFieldError("address") ? "form__label--error" : ""
+                    }`}
+                  >
                     <span className="form__label-text">Address</span>
                     <input
                       type="text"
@@ -380,25 +438,35 @@ export default function App() {
                       onChange={handleChange}
                       onBlur={handleBlur}
                       placeholder="Add Address"
-                      className={getFieldError('address') ? 'form__input--error' : ''}
+                      className={
+                        getFieldError("address") ? "form__input--error" : ""
+                      }
                     />
-                    {getFieldError('address') && (
-                      <span className="form__error-message">{getFieldError('address')}</span>
+                    {getFieldError("address") && (
+                      <span className="form__error-message">
+                        {getFieldError("address")}
+                      </span>
                     )}
                   </label>
-                  
 
                   <label className="form__label">
                     Business Logo (optional)
                     <CloudinaryUploader
                       onUpload={(url) =>
-                        setFormValues((prev) => ({ ...prev, businessLogo: url }))
+                        setFormValues((prev) => ({
+                          ...prev,
+                          businessLogo: url,
+                        }))
                       }
                       resetKey={resetKey}
                     />
                   </label>
-                  
-                  <label className={`form__label ${getFieldError('contact') ? 'form__label--error' : ''}`}>
+
+                  <label
+                    className={`form__label ${
+                      getFieldError("contact") ? "form__label--error" : ""
+                    }`}
+                  >
                     <span className="form__label-text">Contact No</span>
                     <input
                       type="tel"
@@ -409,10 +477,14 @@ export default function App() {
                       placeholder="+91"
                       minLength={10}
                       maxLength={10}
-                      className={getFieldError('contact') ? 'form__input--error' : ''}
+                      className={
+                        getFieldError("contact") ? "form__input--error" : ""
+                      }
                     />
-                    {getFieldError('contact') && (
-                      <span className="form__error-message">{getFieldError('contact')}</span>
+                    {getFieldError("contact") && (
+                      <span className="form__error-message">
+                        {getFieldError("contact")}
+                      </span>
                     )}
                   </label>
                   <button
@@ -445,17 +517,17 @@ export default function App() {
                 <div className="success-content">
                   {formValues.businessLogo && (
                     <div className="success-logo-container">
-                      <img 
-                        src={formValues.businessLogo} 
-                        alt="Your Business Logo" 
+                      <img
+                        src={formValues.businessLogo}
+                        alt="Your Business Logo"
                         className="success-logo"
                       />
                       <p className="success-logo-text">Your Business Logo</p>
                     </div>
                   )}
                   <p className="success-message">
-                    Thank you for registering! We'll Contact you for Christmas & New Year 
-                    creatives to you
+                    Thank you for registering! We'll Contact you for Christmas &
+                     creatives to you
                   </p>
                   <button
                     type="button"
@@ -472,9 +544,9 @@ export default function App() {
       </header>
 
       <section className="section">
-        <p className="eyebrow center">
-          Free Poster For Christmas &amp; New Year
-        </p>
+        <p className="eyebrow center">Free Poster For Makarsankrnti</p>
+        <div className="floating-kite floating-kite--1">🪁</div>
+        <div className="floating-kite floating-kite--2">🪁</div>
         <div className="poster-grid">
           {posterCards.map((card, index) => (
             <PosterCard
@@ -490,17 +562,18 @@ export default function App() {
 
       <section className="section section--two-column">
         <div>
-          <p className="eyebrow">Christmas wish and party</p>
+          <p className="eyebrow">Makarsankrati wish and party</p>
+          <div className="floating-banner floating-banner--1">✨</div>
           <p className="body">
-            Fill your Christmas holiday with joyful decorations, and
+            Fill your Makarsankranti holiday with joyful decorations, and
             unforgettable experiences. Join our festive event with your family
             and children, and celebrate the most magical holiday of the year.
             From heartwarming carols to fun activities for all ages, there is
             something special for everyone.
           </p>
           <p className="body strong">
-            Register now and receive an exclusive Christmas and New Year poster
-            and flyer—absolutely free!
+            Register now and receive an exclusive Makarsankrati and 
+            poster and flyer—absolutely free!
           </p>
         </div>
 
@@ -519,6 +592,8 @@ export default function App() {
 
       <section className="section">
         <p className="eyebrow center">Our Services</p>
+        <div className="floating-kite floating-kite--3">🪁</div>
+        <div className="floating-banner floating-banner--2">🎯</div>
         <div className="services-grid">
           {services.map((service) => (
             <div key={service.label} className="service-pill">
@@ -529,6 +604,11 @@ export default function App() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="section">
+        <div className="floating-kite floating-kite--4">🪁</div>
+        <div className="floating-banner floating-banner--3">✨</div>
       </section>
 
       <footer className="section footer">
@@ -569,7 +649,7 @@ export default function App() {
         <SafeImage
           src={imagePaths.fotter1}
           className="img-fluid footer-image"
-          alt="Festive Christmas and New Year poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
+          alt="Festive  MakarSankranti  poster design featuring celebratory decorations and seasonal elements in a joyful, warm atmosphere"
         />
       </footer>
     </div>
@@ -587,7 +667,7 @@ function Logo() {
         <SafeImage
           src={imagePaths.RVlogo}
           alt="ReimVibe Technologies Logo"
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: "100%", height: "100%" }}
         />
       </div>
       <span className="logo__text">ReimVibe Technologies</span>
@@ -603,14 +683,20 @@ function PosterCard({ title, caption, theme, image }) {
         <p className="poster__title">{title}</p>
         <p className="poster__caption">{caption}</p>
       </div>
-      {image && <SafeImage src={image} className="poster__image" alt={`${theme} poster`} />}
+      {image && (
+        <SafeImage
+          src={image}
+          className="poster__image"
+          alt={`${theme} poster`}
+        />
+      )}
     </div>
   );
 }
 
 function PageLoader({ isLoading }) {
   return (
-    <div className={`page-loader ${!isLoading ? 'fade-out' : ''}`}>
+    <div className={`page-loader ${!isLoading ? "fade-out" : ""}`}>
       <div className="loader-spinner">
         <div className="spinner"></div>
       </div>

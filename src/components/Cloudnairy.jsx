@@ -21,36 +21,45 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
 
   // Reset component when no logo is provided
   useEffect(() => {
-    if (!onUpload || onUpload === '') {
+    if (!onUpload || onUpload === "") {
       setPreview(null);
       setProgress(0);
       setUploadStatus(null);
     }
   }, [onUpload]);
 
-
   const validateFile = (file) => {
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
     const maxSize = 10 * 1024 * 1024; // 10MB
 
     if (!allowedTypes.includes(file.type)) {
-      throw new Error('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
+      throw new Error(
+        "Please select a valid image file (JPEG, PNG, GIF, or WebP)"
+      );
     }
 
     if (file.size > maxSize) {
-
-      throw new Error('File size must be less than 10MB');
+      throw new Error("File size must be less than 10MB");
     }
   };
 
   // Drag and drop handlers
-  const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!isUploading) {
-      setIsDragOver(true);
-    }
-  }, [isUploading]);
+  const handleDragOver = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!isUploading) {
+        setIsDragOver(true);
+      }
+    },
+    [isUploading]
+  );
 
   const handleDragLeave = useCallback((e) => {
     e.preventDefault();
@@ -61,21 +70,22 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
     }
   }, []);
 
+  const handleDrop = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsDragOver(false);
 
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragOver(false);
+      if (isUploading) return;
 
-    if (isUploading) return;
-
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      const file = files[0];
-      uploadToCloudinary(file);
-    }
-  }, [isUploading]);
-
+      const files = Array.from(e.dataTransfer.files);
+      if (files.length > 0) {
+        const file = files[0];
+        uploadToCloudinary(file);
+      }
+    },
+    [isUploading]
+  );
 
   const uploadToCloudinary = async (file) => {
     try {
@@ -93,12 +103,11 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
       formData.append("file", file);
       formData.append("upload_preset", UPLOAD_PRESET);
 
-
       // Create XMLHttpRequest for progress tracking
       const xhr = new XMLHttpRequest();
 
       // Initialize the request with POST method and URL
-      xhr.open('POST', url);
+      xhr.open("POST", url);
 
       // Track upload progress
       xhr.upload.addEventListener("progress", (e) => {
@@ -115,12 +124,18 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
             const response = JSON.parse(xhr.responseText);
             setPreview(response.secure_url);
             setProgress(100);
-            setUploadStatus({ type: 'success', message: 'Logo uploaded successfully!' });
+            setUploadStatus({
+              type: "success",
+              message: "Logo uploaded successfully!",
+            });
 
             onUpload(response.secure_url);
           } else {
             const errorMsg = `Upload failed (${xhr.status}): ${xhr.responseText}`;
-            setUploadStatus({ type: 'error', message: 'Upload failed. Please try again.' });
+            setUploadStatus({
+              type: "error",
+              message: "Upload failed. Please try again.",
+            });
             console.error(errorMsg);
             setProgress(0);
           }
@@ -130,15 +145,17 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
 
       // Handle upload errors
       xhr.onerror = () => {
-        setUploadStatus({ type: 'error', message: 'Network error occurred. Please check your connection.' });
+        setUploadStatus({
+          type: "error",
+          message: "Network error occurred. Please check your connection.",
+        });
         setProgress(0);
         setIsUploading(false);
       };
 
       xhr.send(formData);
-
     } catch (error) {
-      setUploadStatus({ type: 'error', message: error.message });
+      setUploadStatus({ type: "error", message: error.message });
       setProgress(0);
       setIsUploading(false);
     }
@@ -160,7 +177,7 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
     setPreview(null);
     setUploadStatus(null);
     setProgress(0);
-    onUpload('');
+    onUpload("");
   };
 
   return (
@@ -172,10 +189,12 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
         accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
         style={{ display: "none" }}
       />
-      
+
       {!isUploading && progress !== 100 && (
         <div
-          className={`upload-drop-zone ${isDragOver ? 'upload-drop-zone--drag-over' : ''}`}
+          className={`upload-drop-zone ${
+            isDragOver ? "upload-drop-zone--drag-over" : ""
+          }`}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
@@ -183,7 +202,9 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
         >
           <button
             type="button"
-            className={`file-upload-btn ${isUploading ? 'file-upload-btn--loading' : ''}`}
+            className={`file-upload-btn ${
+              isUploading ? "file-upload-btn--loading" : ""
+            }`}
             onClick={(e) => {
               e.stopPropagation();
               handleUploadClick();
@@ -196,14 +217,14 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
                 Uploading...
               </>
             ) : (
-              <>
-                📁 Upload Logo
-              </>
+              <>📁 Upload Logo</>
             )}
           </button>
           {isDragOver && (
             <div className="upload-drop-zone__overlay">
-              <span className="upload-drop-zone__text">Drop your image here</span>
+              <span className="upload-drop-zone__text">
+                Drop your image here
+              </span>
             </div>
           )}
         </div>
@@ -219,12 +240,14 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
         <div className="upload-progress">
           <div className="upload-progress__info">
             <span className="upload-progress__text">
-              {progress < 100 ? `Uploading: ${progress}%` : 'Upload Complete!'}
+              {progress < 100 ? `Uploading: ${progress}%` : "Upload Complete!"}
             </span>
-            {progress === 100 && <span className="upload-progress__success">✅</span>}
+            {progress === 100 && (
+              <span className="upload-progress__success">✅</span>
+            )}
           </div>
           <div className="upload-progress__bar">
-            <div 
+            <div
               className="upload-progress__fill"
               style={{ width: `${progress}%` }}
             ></div>
@@ -245,9 +268,9 @@ const CloudinaryUploader = ({ onUpload, resetKey }) => {
               ❌
             </button>
           </div>
-          <img 
-            src={preview} 
-            alt="Uploaded Logo" 
+          <img
+            src={preview}
+            alt="Uploaded Logo"
             className="uploaded-preview__image"
           />
         </div>

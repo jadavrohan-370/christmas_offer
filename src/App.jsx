@@ -734,10 +734,7 @@ export default function App() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="floating-kite floating-kite--4">🪁</div>
-        <div className="floating-banner floating-banner--3">✨</div>
-      </section>
+
 
       <footer className="section footer">
         <p className="eyebrow center">Stay In Touch</p>

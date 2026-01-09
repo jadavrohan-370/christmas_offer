@@ -1,17 +1,23 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import CloudinaryUploader from "./components/Cloudnairy.jsx";
 import axios from "axios";
+import Lenis from "lenis";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const imagePaths = {
   RVlogo: "/images/RVlogo.png",
-  patang1 : "/images/patan1.jpeg",
-  patang2 : "/images/patan2.jpeg",
+  patang1: "/images/patan1.jpeg",
+  patang2: "/images/patan2.jpeg",
   kite1: "/images/patan1.png",
   kite2: "/images/patan2.png",
   kite3: "/images/santa.png",
-  banner:"/images/p3.jpeg",
-  mainkite:"/images/leftside.png",
-  footer:"/images/footer.png",
+  banner: "/images/p3.jpeg",
+  mainkite: "/images/leftside.png",
+  footer: "/images/footer.png",
 };
 
 // Image error handler component
@@ -101,6 +107,104 @@ const socials = [
 ];
 
 export default function App() {
+  const containerRef = useRef(null);
+
+  // GSAP Animations
+  useGSAP(
+    () => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      // Hero Entrance
+      tl.from(".hero__copy > *", {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.15,
+        delay: 0.5,
+      })
+        .from(
+          ".hero__form .card",
+          {
+            y: 60,
+            opacity: 0,
+            duration: 1,
+            scale: 0.95,
+          },
+          "-=0.8"
+        )
+        .from(
+          ".festive-card",
+          {
+            x: -30,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 0.8,
+          },
+          "-=0.5"
+        );
+
+      // Parallax Effect for floating kites using ScrollTrigger
+      gsap.utils.toArray(".floating-kite").forEach((kite, i) => {
+        gsap.to(kite, {
+          scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.5,
+          },
+          y: (i + 1) * -150, // Move up at different speeds
+          rotation: (i + 1) * 20,
+          ease: "none",
+        });
+      });
+
+      // Poster Flip Animation
+      gsap.from(".poster", {
+        scrollTrigger: {
+          trigger: ".poster-grid",
+          start: "top 80%", // Start animation when top of grid hits 80% of viewport height
+        },
+        y: 100,
+        opacity: 0,
+        rotationX: -15,
+        stagger: 0.2, // Flip in one by one
+        duration: 1,
+        ease: "power4.out"
+      });
+
+      // Magnetic Kites - Mouse Follow Effect
+      const kites = document.querySelectorAll(".kite-decoration");
+
+      const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // Calculate distance from center (-1 to 1)
+        const moveX = (clientX - centerX) / centerX;
+        const moveY = (clientY - centerY) / centerY;
+
+        kites.forEach((kite, index) => {
+          const depth = (index + 1) * 20; // Different depth for each kite
+
+          gsap.to(kite, {
+            x: moveX * depth,
+            y: moveY * depth,
+            duration: 1,
+            ease: "power2.out"
+          });
+        });
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    },
+    { scope: containerRef }
+  );
+
   const [formValues, setFormValues] = useState({
     fullName: "",
     businessName: "",
@@ -135,6 +239,31 @@ export default function App() {
       window.addEventListener("load", handleLoad);
       return () => window.removeEventListener("load", handleLoad);
     }
+  }, []);
+
+  // Initialize Lenis for smooth scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
   }, []);
 
   const [errors, setErrors] = useState({});
@@ -306,7 +435,7 @@ export default function App() {
   };
 
   return (
-    <div className="page">
+    <div className="page" ref={containerRef}>
       <PageLoader isLoading={isLoading} />
       <GradientBackground />
       <header className="hero section site-header">
@@ -322,7 +451,7 @@ export default function App() {
           </h3>
           <p className="body">
             Register now and receive a professionally designed MakarSankranti
-             poster/flyer absolutely free. Whether you&apos;re a
+            poster/flyer absolutely free. Whether you&apos;re a
             business, brand, or company, this festive gift is for all
             registrants.
           </p>
@@ -354,9 +483,8 @@ export default function App() {
 
                 <form className="form" onSubmit={handleSubmit}>
                   <label
-                    className={`form__label ${
-                      getFieldError("fullName") ? "form__label--error" : ""
-                    }`}
+                    className={`form__label ${getFieldError("fullName") ? "form__label--error" : ""
+                      }`}
                   >
                     <span className="form__label-text">Full Name*</span>
                     <input
@@ -365,7 +493,7 @@ export default function App() {
                       value={formValues.fullName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="Jane Doe"
+                      placeholder="Enter Full Name"
                       className={
                         getFieldError("fullName") ? "form__input--error" : ""
                       }
@@ -378,9 +506,8 @@ export default function App() {
                   </label>
 
                   <label
-                    className={`form__label ${
-                      getFieldError("businessName") ? "form__label--error" : ""
-                    }`}
+                    className={`form__label ${getFieldError("businessName") ? "form__label--error" : ""
+                      }`}
                   >
                     <span className="form__label-text">Business Name</span>
                     <input
@@ -389,7 +516,7 @@ export default function App() {
                       value={formValues.businessName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="ReimVibe Technologies"
+                      placeholder="Enter Business Name"
                       className={
                         getFieldError("businessName")
                           ? "form__input--error"
@@ -404,9 +531,8 @@ export default function App() {
                   </label>
 
                   <label
-                    className={`form__label ${
-                      getFieldError("email") ? "form__label--error" : ""
-                    }`}
+                    className={`form__label ${getFieldError("email") ? "form__label--error" : ""
+                      }`}
                   >
                     <span className="form__label-text">Email Address*</span>
                     <input
@@ -415,7 +541,7 @@ export default function App() {
                       value={formValues.email}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="you@example.com"
+                      placeholder="Enter Email Address"
                       className={
                         getFieldError("email") ? "form__input--error" : ""
                       }
@@ -428,9 +554,8 @@ export default function App() {
                   </label>
 
                   <label
-                    className={`form__label ${
-                      getFieldError("address") ? "form__label--error" : ""
-                    }`}
+                    className={`form__label ${getFieldError("address") ? "form__label--error" : ""
+                      }`}
                   >
                     <span className="form__label-text">Address</span>
                     <input
@@ -439,7 +564,7 @@ export default function App() {
                       value={formValues.address}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="Add Address"
+                      placeholder="Enter Address"
                       className={
                         getFieldError("address") ? "form__input--error" : ""
                       }
@@ -465,9 +590,8 @@ export default function App() {
                   </label>
 
                   <label
-                    className={`form__label ${
-                      getFieldError("contact") ? "form__label--error" : ""
-                    }`}
+                    className={`form__label ${getFieldError("contact") ? "form__label--error" : ""
+                      }`}
                   >
                     <span className="form__label-text">Contact No</span>
                     <input
@@ -476,7 +600,7 @@ export default function App() {
                       value={formValues.contact}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="+91"
+                      placeholder="Enter Contact No"
                       minLength={10}
                       maxLength={10}
                       className={
@@ -491,7 +615,7 @@ export default function App() {
                   </label>
                   <button
                     type="submit"
-                    className="btn"
+                    className={`btn ${isSubmitting ? "btn--loading" : ""}`}
                     disabled={!canSubmit || isSubmitting}
                   >
                     {isSubmitting ? (
@@ -529,7 +653,7 @@ export default function App() {
                   )}
                   <p className="success-message">
                     Thank you for registering! We'll Contact you for Christmas &
-                     creatives to you
+                    creatives to you
                   </p>
                   <button
                     type="button"
@@ -574,7 +698,7 @@ export default function App() {
             something special for everyone.
           </p>
           <p className="body strong">
-            Register now and receive an exclusive MakarSankranti and 
+            Register now and receive an exclusive MakarSankranti and
             poster and flyer—absolutely free!
           </p>
         </div>

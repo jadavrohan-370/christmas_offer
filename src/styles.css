@@ -12,6 +12,28 @@
   box-sizing: border-box;
 }
 
+/* Lenis Recommended Styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -187,18 +209,22 @@ body {
     transform: translateY(0px) rotate(0deg);
     opacity: 0.7;
   }
+
   25% {
     transform: translateY(-30px) rotate(-10deg);
     opacity: 1;
   }
+
   50% {
     transform: translateY(-50px) rotate(5deg);
     opacity: 0.9;
   }
+
   75% {
     transform: translateY(-30px) rotate(-5deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(0px) rotate(0deg);
     opacity: 0.7;
@@ -210,18 +236,22 @@ body {
     transform: translateY(0px) rotate(0deg);
     opacity: 0.7;
   }
+
   25% {
     transform: translateY(-35px) rotate(10deg);
     opacity: 1;
   }
+
   50% {
     transform: translateY(-55px) rotate(-5deg);
     opacity: 0.9;
   }
+
   75% {
     transform: translateY(-30px) rotate(5deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(0px) rotate(0deg);
     opacity: 0.7;
@@ -270,6 +300,8 @@ body {
 
 
 
+
+/* Input Micro-animations */
 .form input {
   width: 100%;
   padding: 12px 14px;
@@ -279,47 +311,120 @@ body {
   font-size: clamp(14px, 2vw, 16px);
   color: #273666;
   min-height: 44px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
 }
 
+.form input:hover:not(:focus) {
+  border-color: #ffa500;
+  background: #ffffe0;
+  transform: translateY(-1px);
+}
 
 .form input:focus {
-  outline: 2px solid #e4572e;
-  border-color: transparent;
+  outline: none;
+  border-color: #e4572e;
   background: #fff;
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(228, 87, 46, 0.15);
 }
 
-.form__input--error {
-  border-color: #e53e3e !important;
-  background: #fed7d7 !important;
-}
-
-.form__input--error:focus {
-  outline: 2px solid #e53e3e !important;
-  border-color: transparent !important;
-}
-
+/* Button Micro-animations */
 .btn {
   margin-top: 6px;
   padding: clamp(12px, 3vw, 18px) clamp(16px, 4vw, 24px);
   border: none;
   border-radius: 10px;
   background: linear-gradient(135deg, #e4572e, #d4412a);
+  background-size: 200% 200%;
   color: #fff;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease;
+
+  /* Animation props */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: gradientShift 6s ease infinite;
+
   min-height: 44px;
   font-size: clamp(14px, 2vw, 16px);
   width: 100%;
+
+  /* Flex centering */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.btn:not(:disabled):hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 22px rgba(228, 87, 46, 0.3);
+  letter-spacing: 0.5px;
+  /* Subtle text expansion */
+}
+
+.btn:not(:disabled):active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 4px 10px rgba(228, 87, 46, 0.2);
 }
 
 .btn:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+  filter: grayscale(0.5);
 }
 
+/* Restored Error States */
+.form__input--error {
+  border-color: #e53e3e !important;
+  background: #fed7d7 !important;
+  animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+}
 
+.form__input--error:focus {
+  outline: none !important;
+  border-color: #e53e3e !important;
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2) !important;
+}
+
+@keyframes shake {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+/* Restored Loading Spinner */
 .spinner {
   display: inline-block;
   width: 20px;
@@ -337,26 +442,18 @@ body {
   }
 }
 
-
-/* Enhanced Loading States */
-.btn {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  min-height: 48px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* Loading Button States */
 .btn--loading {
   pointer-events: none;
   opacity: 0.9;
+  position: relative;
+  /* Ensure overlay works */
+  overflow: hidden;
 }
 
 .btn--loading .btn__text {
-  opacity: 0;
-  visibility: hidden;
+  opacity: 1;
+  visibility: visible;
 }
 
 .btn--loading .spinner {
@@ -369,13 +466,6 @@ body {
   display: inline-block;
 }
 
-/* Compact loading button */
-.btn--loading {
-  padding: 12px 16px;
-  min-height: 48px;
-}
-
-/* Loading button with overlay */
 .btn--loading::after {
   content: '';
   position: absolute;
@@ -397,27 +487,11 @@ body {
   }
 }
 
-/* Mobile responsive loading button */
+/* Mobile Adjustments for Loading */
 @media (max-width: 640px) {
-  .btn {
-    min-height: 52px;
-    font-size: 16px;
-  }
-
   .btn--loading {
-    min-height: 52px;
     padding: 14px 18px;
   }
-
-  .btn--loading .spinner {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-.btn:not(:disabled):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 12px 22px rgba(228, 87, 46, 0.3);
 }
 
 .file-upload-btn {
@@ -1049,18 +1123,24 @@ body {
 
 /* Kite floating animations - side positioning */
 @keyframes kiteSwayLeft {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(-20px) translateY(0px);
   }
+
   50% {
     transform: translateX(-50px) translateY(-15px);
   }
 }
 
 @keyframes kiteSwayRight {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(20px) translateY(0px);
   }
+
   50% {
     transform: translateX(50px) translateY(-15px);
   }
@@ -1071,18 +1151,22 @@ body {
     transform: translateY(0px);
     opacity: 0.7;
   }
+
   25% {
     transform: translateY(-20px);
     opacity: 1;
   }
+
   50% {
     transform: translateY(-10px);
     opacity: 0.9;
   }
+
   75% {
     transform: translateY(-25px);
     opacity: 1;
   }
+
   100% {
     transform: translateY(0px);
     opacity: 0.7;
@@ -1094,18 +1178,22 @@ body {
     transform: translateY(0px);
     opacity: 0.7;
   }
+
   25% {
     transform: translateY(-25px);
     opacity: 1;
   }
+
   50% {
     transform: translateY(-15px);
     opacity: 0.9;
   }
+
   75% {
     transform: translateY(-30px);
     opacity: 1;
   }
+
   100% {
     transform: translateY(0px);
     opacity: 0.7;
@@ -1113,18 +1201,24 @@ body {
 }
 
 @keyframes kiteSpin1 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotateZ(-8deg) scaleX(1);
   }
+
   50% {
     transform: rotateZ(8deg) scaleX(1);
   }
 }
 
 @keyframes kiteSpin2 {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotateZ(8deg) scaleX(-1);
   }
+
   50% {
     transform: rotateZ(-8deg) scaleX(-1);
   }
@@ -1135,6 +1229,7 @@ body {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -1162,15 +1257,20 @@ body {
 }
 
 @keyframes float-banner {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   25% {
     transform: translateY(-15px) rotate(-5deg);
   }
+
   50% {
     transform: translateY(-30px) rotate(0deg);
   }
+
   75% {
     transform: translateY(-15px) rotate(5deg);
   }
@@ -1187,6 +1287,7 @@ body {
     transform: translateY(-10px) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translateY(100px) rotate(360deg);
     opacity: 0;
@@ -1317,8 +1418,10 @@ a {
 }
 
 .site-header .logo__text {
-  font-size: 24px;
+  font-size: 30px;
+  /* Increased from 24px */
   line-height: 1;
+  font-weight: 900;
 }
 
 /* Page Loader Styles */
@@ -1384,143 +1487,150 @@ a {
   }
 }
 
-/* Extra small devices (320px to 480px) */
+/* Mobile Polish (up to 480px) */
 @media (max-width: 480px) {
   .section {
-    padding: 32px 12px;
+    padding: 24px 16px;
+    /* slightly more breathing room on sides */
   }
 
-  .hero__form {
+  /* Fix Header Flow */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 20px;
+  }
+
+  .hero__copy {
+    order: -1;
+    /* Ensure text comes first if needed, or keep standard flow */
+    text-align: center;
+  }
+
+  /* Logo should be static on mobile to push content down */
+  /* Logo should be static on mobile to push content down */
+  .site-header .logo {
+    position: relative;
+    left: auto;
+    top: auto;
     width: 100%;
-    padding: 0;
-    margin: 0;
+    margin-bottom: 24px;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    transform: scale(1.35);
+    /* Increased scale for bigger impact */
+    transform-origin: center top;
+    display: flex;
+    white-space: nowrap;
+    /* Prevent text wrapping */
   }
 
+  /* Ensure logo image stays proportionate */
+  .site-header .logo__mark {
+    flex-shrink: 0;
+    /* Don't shrink the image */
+  }
+
+  /* Typography Boost */
+  .headline {
+    font-size: clamp(28px, 8vw, 34px);
+    /* Larger, more festive */
+    line-height: 1.25;
+    margin-bottom: 12px;
+  }
+
+  .eyebrow {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .body {
+    font-size: 16px;
+    /* Readable body text */
+  }
+
+  /* Form & Card Tweak */
+  .card {
+    width: 100%;
+    padding: 20px;
+    margin-top: 12px;
+    box-shadow: 0 8px 20px rgba(255, 165, 0, 0.15);
+    /* Softer shadow for mobile performance */
+  }
+
+  .form input {
+    font-size: 16px;
+    /* prevent iOS zoom on focus */
+  }
+
+  /* Disable scaling on mobile to prevent overflow/scrolling */
+  .form input:focus {
+    transform: none;
+    box-shadow: 0 2px 10px rgba(228, 87, 46, 0.1);
+  }
+
+  .btn:not(:disabled):hover {
+    transform: none;
+    /* No hover lift on touch */
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+    /* Keep simple click feedback */
+  }
+
+  /* Reduce Distractions */
   .kites-decoration {
     display: none !important;
   }
 
-  .hero {
-    gap: 16px;
+  .floating-kite,
+  .floating-banner {
+    opacity: 0.4;
+    /* Fade background elements more */
   }
 
-  .headline {
-    font-size: clamp(20px, 5vw, 26px);
-    line-height: 1.2;
-  }
-
-  .eyebrow {
-    font-size: clamp(14px, 3.5vw, 18px);
-  }
-
-  .card {
-    width: calc(100% - 24px);
-    max-width: calc(100% - 24px);
-    padding: 12px;
-    border-radius: 10px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .card__title {
-    font-size: 18px;
-    margin-bottom: 12px;
-    text-align: center;
-  }
-
-  .form {
-    gap: 10px;
-    width: 100%;
-  }
-
-  .form__label {
-    width: 100%;
-  }
-
-  .form__label-text {
-    font-size: 12px;
-  }
-
-  .form input {
-    padding: 10px 12px;
-    font-size: 16px;
-    min-height: 44px;
-    border-radius: 6px;
-    width: 100%;
-  }
-
-  .btn {
-    padding: 12px 14px;
-    font-size: 14px;
-    min-height: 44px;
-    margin-top: 8px;
-    width: 100%;
-  }
-
-  .kite-card {
-    width: 50px;
-    height: 50px;
-    min-width: 50px;
-    min-height: 50px;
-  }
-
-  .kites-decoration {
-    justify-content: center;
+  /* Adjust Grid for Mobile */
+  .poster-grid {
+    grid-template-columns: 1fr;
+    /* Stack posters */
+    gap: 32px;
   }
 
   .poster {
-    min-height: 180px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+    /* Keep square-ish aspect */
+    min-height: unset;
   }
 
-  .tree-card {
-    padding: clamp(30px, 10vw, 60px);
-    min-height: clamp(120px, 35vw, 200px);
+  .section--two-column {
+    gap: 40px;
   }
 
-  .tree-card__tree {
-    width: clamp(60px, 35vw, 140px);
-    height: clamp(60px, 35vw, 140px);
+  .festive-elements {
+    order: -1;
+    /* Show festive image before text in that section? Or keep as is. sticking to default */
+    gap: 16px;
   }
 
-  .festive-card {
-    min-height: 140px;
+  .footer img {
+    width: 200%;
+    /* Make footer decorative image larger/scrollable or just cover better */
+    left: -50%;
   }
+}
 
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
 
-  .service-pill {
-    padding: 10px 12px;
-    font-size: 12px;
-    min-height: 40px;
-  }
-
-  .footer__contacts {
-    gap: 6px;
-  }
-
-  .contact-item {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-
+/* Tablet scaling for Logo */
+@media (min-width: 481px) and (max-width: 1024px) {
   .site-header .logo {
-    gap: 8px;
-    margin-bottom: 12px;
-    justify-content: center;
-  }
-
-  .site-header .logo__mark {
-    width: 40px;
-    height: 40px;
-    flex: 0 0 40px;
-  }
-
-  .site-header .logo__text {
-    font-size: 13px;
+    transform: scale(0.9);
+    transform-origin: top left;
+    white-space: nowrap;
   }
 }
 
@@ -1609,6 +1719,7 @@ a {
 
 /* Mobile Styles (up to 640px) */
 @media (max-width: 640px) {
+
   .floating-kite,
   .floating-banner {
     font-size: 30px;
